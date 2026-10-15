@@ -6,4 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SLib23T1080033.BusinessLayer\SLib23T1080033.BusinessLayer.csproj" />
+    <ProjectReference Include="..\SLib23T1080033.DataLayer.Interfaces\SLib23T1080033.DataLayer.Interfaces.csproj" />
+    <ProjectReference Include="..\SLib23T1080033.DataLayer.SQLServer\SLib23T1080033.DataLayer.SQLServer.csproj" />
+    <ProjectReference Include="..\SLib23T1080033.Models\SLib23T1080033.Models.csproj" />
+  </ItemGroup>
+
 </Project>
