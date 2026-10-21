@@ -1,0 +1,82 @@
+﻿@model SLib23T1080033.Models.Entities.Author
+
+@{
+    ViewData["Title"] = "Thêm tác giả";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Thêm tác giả</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="CreateAuthor" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="AuthorName" class="form-label">
+                        Tên tác giả
+                    </label>
+                    <input asp-for="AuthorName" class="form-control"
+                           placeholder="Nhập tên tác giả" />
+                    <span asp-validation-for="AuthorName"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Biography" class="form-label">
+                        Tiểu sử
+                    </label>
+                    <textarea asp-for="Biography" class="form-control"
+                              rows="3"
+                              placeholder="Nhập tiểu sử tác giả"></textarea>
+                    <span asp-validation-for="Biography"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="BirthDate" class="form-label">
+                            Ngày sinh
+                        </label>
+                        <input asp-for="BirthDate" type="date"
+                               class="form-control" />
+                        <span asp-validation-for="BirthDate"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DeathDate" class="form-label">
+                            Ngày mất
+                        </label>
+                        <input asp-for="DeathDate" type="date"
+                               class="form-control" />
+                        <span asp-validation-for="DeathDate"
+                              class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label">
+                        Đang hoạt động
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Thêm tác giả
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Quay lại
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
