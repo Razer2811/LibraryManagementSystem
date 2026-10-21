@@ -1,7 +1,17 @@
+using SLib23T1080033.BusinessLayer;
+using SLib23T1080033.DataLayer.Interfaces;
+using SLib23T1080033.DataLayer.SQLServer;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<DbHelper>();
+
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+
+builder.Services.AddScoped<AuthorService>();
 
 var app = builder.Build();
 
