@@ -27,7 +27,17 @@ builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 // Đăng ký LanguageService
 builder.Services.AddScoped<LanguageService>();
 
+// Đăng ký Repository xử lý dữ liệu danh mục
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
+// Đăng ký Service xử lý nghiệp vụ danh mục
+builder.Services.AddScoped<CategoryService>();
+
+// Đăng ký Repository xử lý dữ liệu vị trí
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+
+// Đăng ký Service xử lý nghiệp vụ vị trí
+builder.Services.AddScoped<LocationService>();
 var app = builder.Build();
 
 

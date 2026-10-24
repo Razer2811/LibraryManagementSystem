@@ -1,0 +1,49 @@
+﻿@model SLib23T1080033.Models.Entities.Location
+
+@{
+    ViewData["Title"] = "Sửa vị trí";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Sửa vị trí</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="EditLocation"
+                  asp-route-id="@Model.LocationId"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <input type="hidden" asp-for="LocationId" />
+
+                <div class="mb-3">
+                    <label asp-for="LocationName" class="form-label">
+                        Tên vị trí
+                    </label>
+
+                    <input asp-for="LocationName"
+                           class="form-control" />
+
+                    <span asp-validation-for="LocationName"
+                          class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Lưu thay đổi
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Quay lại
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

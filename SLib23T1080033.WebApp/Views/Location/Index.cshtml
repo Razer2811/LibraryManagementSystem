@@ -1,0 +1,77 @@
+﻿@model IEnumerable<SLib23T1080033.Models.Entities.Location>
+
+@{
+    ViewData["Title"] = "Quản lý vị trí";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Quản lý vị trí</h2>
+
+        <a asp-action="CreateLocation" class="btn btn-primary">
+            + Thêm vị trí
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã vị trí</th>
+                        <th>Tên vị trí</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var location in Model)
+                        {
+                            <tr>
+                                <td>@location.LocationId</td>
+                                <td>@location.LocationName</td>
+                                <td>
+                                    <a asp-action="EditLocation"
+                                       asp-route-id="@location.LocationId"
+                                       class="btn btn-warning btn-sm">
+                                        Sửa
+                                    </a>
+
+                                    <a asp-action="DeleteLocation"
+                                       asp-route-id="@location.LocationId"
+                                       class="btn btn-danger btn-sm">
+                                        Xóa
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center">
+                                Chưa có dữ liệu vị trí.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
