@@ -1,0 +1,44 @@
+﻿@model SLib23T1080033.Models.Entities.MemberType
+
+@{
+    ViewData["Title"] = "Xóa loại độc giả";
+}
+
+<h2>Xóa loại độc giả</h2>
+
+<div class="alert alert-warning">
+    Bạn có chắc chắn muốn xóa loại độc giả này không?
+    Không thể xóa nếu loại độc giả đang được độc giả sử dụng.
+</div>
+
+<dl class="row">
+    <dt class="col-sm-4">ID</dt>
+    <dd class="col-sm-8">@Model.MemberTypeId</dd>
+
+    <dt class="col-sm-4">Tên loại</dt>
+    <dd class="col-sm-8">@Model.TypeName</dd>
+
+    <dt class="col-sm-4">Số sách mượn tối đa</dt>
+    <dd class="col-sm-8">@Model.MaxActiveLoans</dd>
+
+    <dt class="col-sm-4">Thời hạn mượn</dt>
+    <dd class="col-sm-8">@Model.LoanPeriodDays ngày</dd>
+
+    <dt class="col-sm-4">Số lần gia hạn</dt>
+    <dd class="col-sm-8">@Model.MaxRenewals</dd>
+
+    <dt class="col-sm-4">Trạng thái</dt>
+    <dd class="col-sm-8">
+        @(Model.IsActive ? "Đang hoạt động" : "Ngừng hoạt động")
+    </dd>
+</dl>
+
+<form asp-action="DeleteMemberTypeConfirmed"
+      asp-route-id="@Model.MemberTypeId"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+    <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

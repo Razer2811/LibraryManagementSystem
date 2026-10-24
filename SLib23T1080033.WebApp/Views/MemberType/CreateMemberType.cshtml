@@ -1,0 +1,61 @@
+﻿@model SLib23T1080033.Models.Entities.MemberType
+
+@{
+    ViewData["Title"] = "Thêm loại độc giả";
+}
+
+<h2>Thêm loại độc giả</h2>
+
+<form asp-action="CreateMemberType" method="post">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="TypeName" class="form-label">Tên loại độc giả</label>
+        <input asp-for="TypeName" class="form-control" />
+        <span asp-validation-for="TypeName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MaxActiveLoans" class="form-label">
+            Số sách mượn tối đa
+        </label>
+        <input asp-for="MaxActiveLoans" type="number" min="0"
+               class="form-control" />
+        <span asp-validation-for="MaxActiveLoans" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LoanPeriodDays" class="form-label">
+            Thời hạn mượn (ngày)
+        </label>
+        <input asp-for="LoanPeriodDays" type="number" min="1"
+               class="form-control" />
+        <span asp-validation-for="LoanPeriodDays" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MaxRenewals" class="form-label">
+            Số lần gia hạn tối đa
+        </label>
+        <input asp-for="MaxRenewals" type="number" min="0"
+               class="form-control" />
+        <span asp-validation-for="MaxRenewals" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label">
+            Đang hoạt động
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

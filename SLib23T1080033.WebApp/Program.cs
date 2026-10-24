@@ -38,6 +38,11 @@ builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 
 // Đăng ký Service xử lý nghiệp vụ vị trí
 builder.Services.AddScoped<LocationService>();
+
+// Đăng ký Repository xử lý dữ liệu loại thành viên
+builder.Services.AddScoped<IMemberTypeRepository, MemberTypeRepository>();
+// Đăng ký Service xử lý nghiệp vụ loại thành viên
+builder.Services.AddScoped<MemberTypeService>();
 var app = builder.Build();
 
 
