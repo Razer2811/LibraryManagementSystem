@@ -1,0 +1,73 @@
+﻿@model SLib23T1080033.Models.Entities.Category
+
+@{
+    ViewData["Title"] = "Sửa danh mục";
+    var parentCategories =
+        ViewBag.ParentCategories as
+            IEnumerable<SLib23T1080033.Models.Entities.Category>
+        ?? Enumerable.Empty<SLib23T1080033.Models.Entities.Category>();
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Sửa danh mục</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="EditCategory"
+                  asp-route-id="@Model.CategoryId"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <input type="hidden" asp-for="CategoryId" />
+
+                <div class="mb-3">
+                    <label asp-for="CategoryName" class="form-label">
+                        Tên danh mục
+                    </label>
+
+                    <input asp-for="CategoryName"
+                           class="form-control" />
+
+                    <span asp-validation-for="CategoryName"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ParentCategoryId" class="form-label">
+                        Danh mục cha
+                    </label>
+
+                    <select asp-for="ParentCategoryId" class="form-select">
+                        <option value="">-- Danh mục gốc --</option>
+
+                        @foreach (var parent in parentCategories)
+                        {
+                            <option value="@parent.CategoryId">
+                                @parent.CategoryName
+                            </option>
+                        }
+                    </select>
+
+                    <span asp-validation-for="ParentCategoryId"
+                          class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Lưu thay đổi
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Quay lại
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

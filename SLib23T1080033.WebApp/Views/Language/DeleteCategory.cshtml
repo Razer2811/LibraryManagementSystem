@@ -1,0 +1,52 @@
+﻿@model SLib23T1080033.Models.Entities.Category
+
+@{
+    ViewData["Title"] = "Xóa danh mục";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Xóa danh mục</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white">
+            Xác nhận xóa danh mục
+        </div>
+
+        <div class="card-body">
+            <div class="alert alert-warning">
+                Bạn có chắc chắn muốn xóa danh mục này không?
+                Không thể xóa nếu danh mục đang được sách sử dụng
+                hoặc còn danh mục con.
+            </div>
+
+            <dl class="row">
+                <dt class="col-sm-3">Mã danh mục</dt>
+                <dd class="col-sm-9">@Model.CategoryId</dd>
+
+                <dt class="col-sm-3">Tên danh mục</dt>
+                <dd class="col-sm-9">@Model.CategoryName</dd>
+
+                <dt class="col-sm-3">Mã danh mục cha</dt>
+                <dd class="col-sm-9">
+                    @(Model.ParentCategoryId?.ToString() ?? "Danh mục gốc")
+                </dd>
+            </dl>
+
+            <form asp-controller="Category"
+                  asp-action="DeleteCategoryConfirmed"
+                  asp-route-id="@Model.CategoryId"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit" class="btn btn-danger">
+                    Xác nhận xóa
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Hủy
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

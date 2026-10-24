@@ -26,6 +26,8 @@ builder.Services.AddScoped<PublisherService>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 // Đăng ký LanguageService
 builder.Services.AddScoped<LanguageService>();
+
+
 var app = builder.Build();
 
 
