@@ -1,0 +1,46 @@
+﻿@model SLib23T1080033.Models.Entities.Language
+
+@{
+    ViewData["Title"] = "Xóa ngôn ngữ";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Xóa ngôn ngữ</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white">
+            Xác nhận xóa ngôn ngữ
+        </div>
+
+        <div class="card-body">
+            <div class="alert alert-warning">
+                Bạn có chắc chắn muốn xóa ngôn ngữ này không?
+                Nếu ngôn ngữ đang được sách sử dụng, hệ thống sẽ từ chối xóa.
+            </div>
+
+            <dl class="row">
+                <dt class="col-sm-3">Mã ngôn ngữ</dt>
+                <dd class="col-sm-9">@Model.LanguageId</dd>
+
+                <dt class="col-sm-3">Tên ngôn ngữ</dt>
+                <dd class="col-sm-9">@Model.LanguageName</dd>
+            </dl>
+
+            <form asp-controller="Language"
+                  asp-action="DeleteLanguageConfirmed"
+                  asp-route-id="@Model.LanguageId"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit" class="btn btn-danger">
+                    Xác nhận xóa
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Hủy
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+﻿@model SLib23T1080033.Models.Entities.Language
+
+@{
+    ViewData["Title"] = "Sửa ngôn ngữ";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Sửa ngôn ngữ</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="EditLanguage"
+                  asp-route-id="@Model.LanguageId"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <input type="hidden" asp-for="LanguageId" />
+
+                <div class="mb-3">
+                    <label asp-for="LanguageName" class="form-label">
+                        Tên ngôn ngữ
+                    </label>
+
+                    <input asp-for="LanguageName"
+                           class="form-control" />
+
+                    <span asp-validation-for="LanguageName"
+                          class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Lưu thay đổi
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Quay lại
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

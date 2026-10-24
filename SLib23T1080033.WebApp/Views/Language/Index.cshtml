@@ -1,0 +1,75 @@
+﻿@model IEnumerable<SLib23T1080033.Models.Entities.Language>
+
+@{
+    ViewData["Title"] = "Quản lý ngôn ngữ";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Quản lý ngôn ngữ</h2>
+        <a asp-action="CreateLanguage" class="btn btn-primary">
+            + Thêm ngôn ngữ
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã ngôn ngữ</th>
+                        <th>Tên ngôn ngữ</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var language in Model)
+                        {
+                            <tr>
+                                <td>@language.LanguageId</td>
+                                <td>@language.LanguageName</td>
+                                <td>
+                                    <a asp-action="EditLanguage"
+                                       asp-route-id="@language.LanguageId"
+                                       class="btn btn-warning btn-sm">
+                                        Sửa
+                                    </a>
+
+                                    <a asp-action="DeleteLanguage"
+                                       asp-route-id="@language.LanguageId"
+                                       class="btn btn-danger btn-sm">
+                                        Xóa
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center">
+                                Chưa có dữ liệu ngôn ngữ.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

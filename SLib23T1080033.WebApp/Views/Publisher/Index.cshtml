@@ -1,0 +1,102 @@
+﻿@model IEnumerable<SLib23T1080033.Models.Entities.Publisher>
+
+@{
+    ViewData["Title"] = "Quản lý nhà xuất bản";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Quản lý nhà xuất bản</h2>
+
+        <a asp-action="CreatePublisher" class="btn btn-primary">
+            + Thêm nhà xuất bản
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã</th>
+                        <th>Tên nhà xuất bản</th>
+                        <th>Địa chỉ</th>
+                        <th>Điện thoại</th>
+                        <th>Email</th>
+                        <th>Website</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var publisher in Model)
+                        {
+                            <tr>
+                                <td>@publisher.PublisherId</td>
+                                <td>@publisher.PublisherName</td>
+                                <td>@(publisher.Address ?? "—")</td>
+                                <td>@(publisher.Phone ?? "—")</td>
+                                <td>@(publisher.Email ?? "—")</td>
+                                <td>@(publisher.Website ?? "—")</td>
+
+                                <td>
+                                    @if (publisher.IsActive)
+                                    {
+                                        <span class="badge bg-success">
+                                            Hoạt động
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Ngừng hoạt động
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <a asp-action="EditPublisher"
+                                       asp-route-id="@publisher.PublisherId"
+                                       class="btn btn-warning btn-sm">
+                                        Sửa
+                                    </a>
+
+                                    <a asp-action="DeletePublisher"
+                                       asp-route-id="@publisher.PublisherId"
+                                       class="btn btn-danger btn-sm">
+                                        Xóa
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center py-4">
+                                Chưa có dữ liệu nhà xuất bản.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

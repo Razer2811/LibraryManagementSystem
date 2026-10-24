@@ -1,0 +1,72 @@
+﻿@model SLib23T1080033.Models.Entities.Publisher
+
+@{
+    ViewData["Title"] = "Xóa nhà xuất bản";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Xóa nhà xuất bản</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white">
+            Xác nhận xóa nhà xuất bản
+        </div>
+
+        <div class="card-body">
+            <div class="alert alert-warning">
+                Bạn có chắc chắn muốn xóa nhà xuất bản này không?
+                Thao tác này không thể hoàn tác.
+            </div>
+
+            <dl class="row">
+                <dt class="col-sm-3">Mã nhà xuất bản</dt>
+                <dd class="col-sm-9">@Model.PublisherId</dd>
+
+                <dt class="col-sm-3">Tên nhà xuất bản</dt>
+                <dd class="col-sm-9">@Model.PublisherName</dd>
+
+                <dt class="col-sm-3">Địa chỉ</dt>
+                <dd class="col-sm-9">@(Model.Address ?? "—")</dd>
+
+                <dt class="col-sm-3">Điện thoại</dt>
+                <dd class="col-sm-9">@(Model.Phone ?? "—")</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@(Model.Email ?? "—")</dd>
+
+                <dt class="col-sm-3">Website</dt>
+                <dd class="col-sm-9">@(Model.Website ?? "—")</dd>
+
+                <dt class="col-sm-3">Trạng thái</dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Hoạt động</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">
+                            Ngừng hoạt động
+                        </span>
+                    }
+                </dd>
+            </dl>
+
+            <form asp-controller="Publisher"
+                  asp-action="DeletePublisherConfirmed"
+                  asp-route-id="@Model.PublisherId"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit" class="btn btn-danger">
+                    Xác nhận xóa
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Hủy
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
