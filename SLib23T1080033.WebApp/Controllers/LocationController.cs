@@ -1,27 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using SLib23T1080033.BusinessLayer;
 using SLib23T1080033.Models.Entities;
 
 namespace SLib23T1080033.WebApp.Controllers;
 
-public class LocationController(LocationService _locationService)
-    : Controller
+public class LocationController(LocationService _service) : Controller
 {
-    // Hiển thị danh sách vị trí
     public async Task<IActionResult> Index()
     {
-        var locations = await _locationService.ListAsync();
+        var locations = await _service.ListAsync();
         return View(locations);
     }
 
-    // Hiển thị form thêm
     [HttpGet]
     public IActionResult CreateLocation()
     {
-        return View();
+        return View(new Location { IsActive = true });
     }
 
-    // Xử lý thêm
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateLocation(Location location)
@@ -31,10 +28,9 @@ public class LocationController(LocationService _locationService)
 
         try
         {
-            await _locationService.AddAsync(location);
+            await _service.AddAsync(location);
 
             TempData["SuccessMessage"] = "Thêm vị trí thành công!";
-
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
@@ -44,13 +40,12 @@ public class LocationController(LocationService _locationService)
         }
     }
 
-    // Hiển thị form sửa
     [HttpGet]
     public async Task<IActionResult> EditLocation(int id)
     {
         try
         {
-            var location = await _locationService.GetAsync(id);
+            var location = await _service.GetAsync(id);
             return View(location);
         }
         catch (Exception ex)
@@ -60,7 +55,6 @@ public class LocationController(LocationService _locationService)
         }
     }
 
-    // Xử lý sửa
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditLocation(
@@ -74,7 +68,7 @@ public class LocationController(LocationService _locationService)
 
         try
         {
-            var result = await _locationService.UpdateAsync(location);
+            var result = await _service.UpdateAsync(location);
 
             if (result)
             {
@@ -94,13 +88,12 @@ public class LocationController(LocationService _locationService)
         }
     }
 
-    // Hiển thị trang xác nhận xóa
     [HttpGet]
     public async Task<IActionResult> DeleteLocation(int id)
     {
         try
         {
-            var location = await _locationService.GetAsync(id);
+            var location = await _service.GetAsync(id);
             return View(location);
         }
         catch (Exception ex)
@@ -110,14 +103,13 @@ public class LocationController(LocationService _locationService)
         }
     }
 
-    // Xử lý xóa
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteLocationConfirmed(int id)
     {
         try
         {
-            var result = await _locationService.DeleteAsync(id);
+            var result = await _service.DeleteAsync(id);
 
             if (result)
                 TempData["SuccessMessage"] = "Xóa vị trí thành công!";

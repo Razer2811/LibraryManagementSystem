@@ -4,43 +4,50 @@
     ViewData["Title"] = "Xóa vị trí";
 }
 
-<div class="container mt-4">
-    <h2 class="mb-4">Xóa vị trí</h2>
+<h2>Xóa vị trí lưu trữ</h2>
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-danger text-white">
-            Xác nhận xóa vị trí
-        </div>
-
-        <div class="card-body">
-            <div class="alert alert-warning">
-                Bạn có chắc chắn muốn xóa vị trí này không?
-                Không thể xóa nếu vị trí đang được bản sao sách sử dụng.
-            </div>
-
-            <dl class="row">
-                <dt class="col-sm-3">Mã vị trí</dt>
-                <dd class="col-sm-9">@Model.LocationId</dd>
-
-                <dt class="col-sm-3">Tên vị trí</dt>
-                <dd class="col-sm-9">@Model.LocationName</dd>
-            </dl>
-
-            <form asp-controller="Location"
-                  asp-action="DeleteLocationConfirmed"
-                  asp-route-id="@Model.LocationId"
-                  method="post">
-
-                @Html.AntiForgeryToken()
-
-                <button type="submit" class="btn btn-danger">
-                    Xác nhận xóa
-                </button>
-
-                <a asp-action="Index" class="btn btn-secondary">
-                    Hủy
-                </a>
-            </form>
-        </div>
-    </div>
+<div class="alert alert-warning">
+    Bạn có chắc chắn muốn xóa vị trí này không?
+    Không thể xóa nếu vị trí đang được bản sao sách sử dụng.
 </div>
+
+<dl class="row">
+    <dt class="col-sm-3">Mã ID</dt>
+    <dd class="col-sm-9">@Model.LocationId</dd>
+
+    <dt class="col-sm-3">Mã vị trí</dt>
+    <dd class="col-sm-9">@Model.LocationCode</dd>
+
+    <dt class="col-sm-3">Tên vị trí</dt>
+    <dd class="col-sm-9">@Model.LocationName</dd>
+
+    <dt class="col-sm-3">Tầng</dt>
+    <dd class="col-sm-9">@Model.Floor</dd>
+
+    <dt class="col-sm-3">Phòng</dt>
+    <dd class="col-sm-9">@Model.Room</dd>
+
+    <dt class="col-sm-3">Kệ</dt>
+    <dd class="col-sm-9">@Model.Shelf</dd>
+
+    <dt class="col-sm-3">Mô tả</dt>
+    <dd class="col-sm-9">@Model.Description</dd>
+
+    <dt class="col-sm-3">Trạng thái</dt>
+    <dd class="col-sm-9">
+        @(Model.IsActive ? "Đang hoạt động" : "Ngừng hoạt động")
+    </dd>
+</dl>
+
+<form asp-action="DeleteLocationConfirmed"
+      asp-route-id="@Model.LocationId"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+    <button type="submit" class="btn btn-danger">
+        Xác nhận xóa
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

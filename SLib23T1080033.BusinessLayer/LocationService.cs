@@ -1,32 +1,30 @@
-﻿using SLib23T1080033.DataLayer.Interfaces;
+﻿
+using SLib23T1080033.DataLayer.Interfaces;
 using SLib23T1080033.Models.Entities;
 
 namespace SLib23T1080033.BusinessLayer;
 
 public class LocationService
 {
-    private readonly ILocationRepository _locationRepository;
+    private readonly ILocationRepository _repository;
 
-    public LocationService(ILocationRepository locationRepository)
+    public LocationService(ILocationRepository repository)
     {
-        _locationRepository = locationRepository
-            ?? throw new ArgumentNullException(
-                nameof(locationRepository));
+        _repository = repository
+            ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    // Lấy danh sách vị trí
     public async Task<IEnumerable<Location>> ListAsync()
     {
-        return await _locationRepository.ListAsync();
+        return await _repository.ListAsync();
     }
 
-    // Lấy thông tin vị trí theo ID
     public async Task<Location> GetAsync(int id)
     {
         if (id <= 0)
-            throw new Exception("ID vị trí không hợp lệ.");
+            throw new Exception("Mã vị trí không hợp lệ.");
 
-        var location = await _locationRepository.GetAsync(id);
+        var location = await _repository.GetAsync(id);
 
         if (location == null)
             throw new Exception("Không tìm thấy vị trí.");
@@ -34,82 +32,86 @@ public class LocationService
         return location;
     }
 
-    // Thêm vị trí
     public async Task<int> AddAsync(Location location)
     {
         ValidateLocation(location);
 
-        location.LocationName = location.LocationName.Trim();
+        NormalizeLocation(location);
 
-        return await _locationRepository.AddAsync(location);
+        return await _repository.AddAsync(location);
     }
 
-    // Cập nhật vị trí
     public async Task<bool> UpdateAsync(Location location)
     {
         ValidateLocation(location);
 
         if (location.LocationId <= 0)
-            throw new Exception("ID vị trí không hợp lệ.");
+            throw new Exception("Mã vị trí không hợp lệ.");
 
-        var existing = await _locationRepository.GetAsync(
-            location.LocationId);
+        var existing = await _repository.GetAsync(location.LocationId);
 
         if (existing == null)
             throw new Exception("Không tìm thấy vị trí cần cập nhật.");
 
-        location.LocationName = location.LocationName.Trim();
+        NormalizeLocation(location);
 
-        var result = await _locationRepository.UpdateAsync(location);
+        var result = await _repository.UpdateAsync(location);
 
         return result > 0;
     }
 
-    // Xóa vị trí
     public async Task<bool> DeleteAsync(int id)
     {
         if (id <= 0)
-            throw new Exception("ID vị trí không hợp lệ.");
+            throw new Exception("Mã vị trí không hợp lệ.");
 
-        var location = await _locationRepository.GetAsync(id);
+        var location = await _repository.GetAsync(id);
 
         if (location == null)
             throw new Exception("Không tìm thấy vị trí cần xóa.");
 
-        if (await _locationRepository.InUsedAsync(id))
+        if (await _repository.InUsedAsync(id))
+        {
             throw new Exception(
                 "Không thể xóa vị trí vì đang được bản sao sách sử dụng.");
+        }
 
-        return await _locationRepository.DeleteAsync(id) > 0;
+        return await _repository.DeleteAsync(id) > 0;
     }
 
-    // Kiểm tra vị trí có đang được sử dụng không
     public async Task<bool> InUsedAsync(int id)
     {
         if (id <= 0)
-            throw new Exception("ID vị trí không hợp lệ.");
+            throw new Exception("Mã vị trí không hợp lệ.");
 
-        var location = await _locationRepository.GetAsync(id);
-
-        if (location == null)
-            throw new Exception("Không tìm thấy vị trí.");
-
-        return await _locationRepository.InUsedAsync(id);
+        return await _repository.InUsedAsync(id);
     }
 
-    // Kiểm tra dữ liệu vị trí
-    private void ValidateLocation(Location location)
+    private static void ValidateLocation(Location location)
     {
         if (location == null)
-            throw new Exception(
-                "Thông tin vị trí không được để trống.");
+            throw new Exception("Thông tin vị trí không được để trống.");
+
+        if (string.IsNullOrWhiteSpace(location.LocationCode))
+            throw new Exception("Mã vị trí không được để trống.");
 
         if (string.IsNullOrWhiteSpace(location.LocationName))
-            throw new Exception(
-                "Tên vị trí không được để trống.");
+            throw new Exception("Tên vị trí không được để trống.");
+    }
 
-        if (location.LocationName.Trim().Length > 100)
-            throw new Exception(
-                "Tên vị trí không được vượt quá 100 ký tự.");
+    private static void NormalizeLocation(Location location)
+    {
+        location.LocationCode = location.LocationCode.Trim();
+        location.LocationName = location.LocationName.Trim();
+
+        location.Floor = NormalizeOptionalText(location.Floor);
+        location.Room = NormalizeOptionalText(location.Room);
+        location.Shelf = NormalizeOptionalText(location.Shelf);
+        location.Description = NormalizeOptionalText(location.Description);
+    }
+
+    private static string? NormalizeOptionalText(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
     }
 }
