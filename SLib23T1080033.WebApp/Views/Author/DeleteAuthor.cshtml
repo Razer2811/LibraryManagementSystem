@@ -1,0 +1,77 @@
+﻿@model SLib23T1080033.Models.Entities.Author
+
+@{
+    ViewData["Title"] = "Xóa tác giả";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Xóa tác giả</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white">
+            Xác nhận xóa tác giả
+        </div>
+
+        <div class="card-body">
+            <div class="alert alert-warning">
+                Bạn có chắc chắn muốn xóa tác giả này không?
+                Thao tác này không thể hoàn tác.
+            </div>
+
+            <dl class="row">
+                <dt class="col-sm-3">Mã tác giả</dt>
+                <dd class="col-sm-9">@Model.AuthorId</dd>
+
+                <dt class="col-sm-3">Tên tác giả</dt>
+                <dd class="col-sm-9">@Model.AuthorName</dd>
+
+                <dt class="col-sm-3">Tiểu sử</dt>
+                <dd class="col-sm-9">
+                    @(string.IsNullOrWhiteSpace(Model.Biography)
+                                        ? "Chưa có"
+                                        : Model.Biography)
+                </dd>
+
+                <dt class="col-sm-3">Ngày sinh</dt>
+                <dd class="col-sm-9">
+                    @(Model.BirthDate?.ToString("dd/MM/yyyy") ?? "—")
+                </dd>
+
+                <dt class="col-sm-3">Ngày mất</dt>
+                <dd class="col-sm-9">
+                    @(Model.DeathDate?.ToString("dd/MM/yyyy") ?? "—")
+                </dd>
+
+                <dt class="col-sm-3">Trạng thái</dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Hoạt động</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">
+                            Ngừng hoạt động
+                        </span>
+                    }
+                </dd>
+            </dl>
+
+            <form asp-action="DeleteAuthorConfirmed"
+                  asp-route-id="@Model.AuthorId"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('Bạn chắc chắn muốn xóa tác giả này?');">
+                    Xác nhận xóa
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Hủy
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

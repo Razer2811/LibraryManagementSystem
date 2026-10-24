@@ -51,5 +51,97 @@ namespace SLib23T1080033.WebApp.Controllers
                 return View(author);
             }
         }
+        // GET: Hiển thị form chỉnh sửa tác giả
+        [HttpGet]
+        public async Task<IActionResult> EditAuthor(int id)
+        {
+            try
+            {
+                var author = await _authorService.GetAsync(id);
+                return View(author);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        // POST: Xử lý cập nhật tác giả
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAuthor(int id, Author author)
+        {
+            if (id != author.AuthorId)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(author);
+            }
+
+            try
+            {
+                var result = await _authorService.UpdateAsync(author);
+
+                if (result)
+                {
+                    TempData["SuccessMessage"] = "Cập nhật tác giả thành công!";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                ModelState.AddModelError(
+                    string.Empty, "Không thể cập nhật tác giả.");
+
+                return View(author);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(author);
+            }
+        }
+        // GET: Hiển thị trang xác nhận xóa tác giả
+        [HttpGet]
+        public async Task<IActionResult> DeleteAuthor(int id)
+        {
+            try
+            {
+                var author = await _authorService.GetAsync(id);
+                return View(author);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        // POST: Xử lý xóa tác giả
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAuthorConfirmed(int id)
+        {
+            try
+            {
+                var result = await _authorService.DeleteAsync(id);
+
+                if (result)
+                {
+                    TempData["SuccessMessage"] = "Xóa tác giả thành công!";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                TempData["ErrorMessage"] = "Không thể xóa tác giả.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }
