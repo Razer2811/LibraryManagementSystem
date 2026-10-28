@@ -2,12 +2,11 @@
 @model IEnumerable<SLib23T1080033.Models.Entities.Author>
 
 @{
-    ViewData["Title"] = "Quản lý tác giả";
+    ViewBag.Title = "Quản lý tác giả";
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Quản lý tác giả</h2>
 
         <a asp-action="CreateAuthor" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Thêm tác giả
@@ -89,3 +88,5 @@
         </div>
     </div>
 </div>
+
+

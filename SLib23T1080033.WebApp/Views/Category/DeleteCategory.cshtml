@@ -1,0 +1,34 @@
+﻿@model SLib23T1080033.Models.Entities.Category
+
+@{
+    ViewData["Title"] = "Xóa danh mục";
+}
+
+<h2>Xóa danh mục</h2>
+
+<div class="alert alert-warning">
+    Bạn có chắc chắn muốn xóa danh mục này không?
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Mã danh mục</dt>
+    <dd class="col-sm-9">@Model.CategoryId</dd>
+
+    <dt class="col-sm-3">Tên danh mục</dt>
+    <dd class="col-sm-9">@Model.CategoryName</dd>
+
+    <dt class="col-sm-3">Mã danh mục cha</dt>
+    <dd class="col-sm-9">
+        @(Model.ParentCategoryId?.ToString() ?? "Không có")
+    </dd>
+</dl>
+
+<form asp-action="DeleteCategoryConfirmed"
+      asp-route-id="@Model.CategoryId"
+      method="post">
+
+    <input type="hidden" asp-for="CategoryId" />
+
+    <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>
