@@ -5,6 +5,7 @@
 }
 
 
+<div class="catalogue-index">
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">
@@ -53,11 +54,11 @@
                 <td>
                     @if (item.IsActive)
                     {
-                        <span class="text-success">Đang hoạt động</span>
+                            <span class="badge bg-success">Đang hoạt động</span>
                     }
                     else
                     {
-                        <span class="text-danger">Ngừng hoạt động</span>
+                            <span class="badge bg-secondary">Ngừng hoạt động</span>
                     }
                 </td>
                 <td>
@@ -77,3 +78,4 @@
         }
     </tbody>
 </table>
+</div>

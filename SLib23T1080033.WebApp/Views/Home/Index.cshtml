@@ -1,8 +1,95 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Tổng quan";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="editorial-page">
+    <section class="editorial-hero">
+        <div>
+            <p class="editorial-kicker">SLib / Không gian quản trị</p>
+            <h1 class="editorial-title">Một thư viện được kể bằng những chi tiết đúng.</h1>
+            <p class="editorial-lede">Từ kho sách, độc giả đến những lượt mượn trả hằng ngày — mọi thứ được sắp xếp để công việc trở nên rõ ràng và có nhịp điệu.</p>
+            <div class="editorial-actions">
+                <a class="btn btn-primary" asp-controller="Book" asp-action="Index"><i class="bi bi-book me-1"></i> Mở kho sách</a>
+                <a class="btn btn-outline-secondary" asp-controller="Author" asp-action="Index">Khám phá danh mục</a>
+            </div>
+        </div>
+        <div class="editorial-note">
+            <strong>Đọc chậm. Quản lý kỹ.</strong>
+            Một giao diện chỉn chu để những người giữ tri thức có thể tập trung vào điều quan trọng.
+        </div>
+    </section>
+
+    <section class="editorial-section">
+        <div class="editorial-section-heading">
+            <h2>Các chương của thư viện</h2>
+            <span>Library index</span>
+        </div>
+        <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="library-stat">
+                <span class="library-stat-icon"><i class="bi bi-book"></i></span>
+                <strong>Kho sách</strong>
+                <span>Theo dõi đầu sách và vị trí lưu trữ</span>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="library-stat">
+                <span class="library-stat-icon"><i class="bi bi-people"></i></span>
+                <strong>Độc giả</strong>
+                <span>Quản lý hồ sơ và loại độc giả</span>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="library-stat">
+                <span class="library-stat-icon"><i class="bi bi-journal-arrow-up"></i></span>
+                <strong>Mượn - trả</strong>
+                <span>Kiểm soát luân chuyển tài liệu</span>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="library-stat">
+                <span class="library-stat-icon"><i class="bi bi-grid"></i></span>
+                <strong>Danh mục</strong>
+                <span>Chuẩn hóa dữ liệu nền tảng</span>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <section class="editorial-section pt-0">
+    <div class="card border-0">
+        <div class="card-body p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h2 class="library-section-title">Truy cập nhanh</h2>
+                <span class="text-muted small">Các khu vực thường dùng</span>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6 col-xl-3">
+                    <a class="library-quick-link" asp-controller="Author" asp-action="Index">
+                        <i class="bi bi-person-badge"></i>
+                        <span><strong>Tác giả</strong><small>Danh sách và thông tin tác giả</small></span>
+                    </a>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <a class="library-quick-link" asp-controller="Publisher" asp-action="Index">
+                        <i class="bi bi-building"></i>
+                        <span><strong>Nhà xuất bản</strong><small>Thông tin đối tác xuất bản</small></span>
+                    </a>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <a class="library-quick-link" asp-controller="Member" asp-action="Index">
+                        <i class="bi bi-person-lines-fill"></i>
+                        <span><strong>Độc giả</strong><small>Hồ sơ người sử dụng thư viện</small></span>
+                    </a>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <a class="library-quick-link" asp-controller="Borrowing" asp-action="Index">
+                        <i class="bi bi-arrow-left-right"></i>
+                        <span><strong>Mượn sách</strong><small>Ghi nhận các lượt mượn</small></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
 </div>

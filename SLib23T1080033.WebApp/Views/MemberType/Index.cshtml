@@ -5,6 +5,7 @@
 }
 
 
+<div class="catalogue-index">
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">
@@ -46,9 +47,17 @@
                 <td>@item.MaxActiveLoans</td>
                 <td>@item.LoanPeriodDays</td>
                 <td>@item.MaxRenewals</td>
-                <td>
-                    @(item.IsActive ? "Đang hoạt động" : "Ngừng hoạt động")
-                </td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="badge bg-success">Đang hoạt động</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Ngừng hoạt động</span>
+                        }
+                    </td>
+               
                 <td>
                     <a asp-action="EditMemberType"
                        asp-route-id="@item.MemberTypeId"
@@ -66,3 +75,4 @@
         }
     </tbody>
 </table>
+</div>

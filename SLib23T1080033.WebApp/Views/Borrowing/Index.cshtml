@@ -1,3 +1,47 @@
 ﻿@{
     ViewBag.Title = "Quản lý mượn sách";
 }
+
+<div class="editorial-page">
+    <section class="editorial-hero">
+        <div>
+            <p class="editorial-kicker">04 / Những chuyến đi</p>
+            <h1 class="editorial-title">Một cuốn sách chỉ thật sự sống khi được chuyền tay.</h1>
+            <p class="editorial-lede">Theo dõi các lượt mượn bằng một dòng chảy trực quan, nhẹ nhàng và không bỏ sót nhịp nào.</p>
+            <div class="editorial-actions">
+                <a class="btn btn-primary" href="#borrowing-list"><i class="bi bi-journal-plus me-1"></i> Tạo lượt mượn</a>
+                <a class="btn btn-outline-secondary" href="#borrowing-list">Lịch sử mượn</a>
+            </div>
+        </div>
+        <div class="editorial-note">
+            <strong>Luân chuyển là nhịp thở của kho sách.</strong>
+            Mỗi lượt mượn là một lời hẹn để tri thức tiếp tục hành trình.
+        </div>
+    </section>
+
+    <section class="editorial-section" id="borrowing-list">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="editorial-panel">
+                    <div class="editorial-section-heading"><h2>Đang được mượn</h2><span>Circulation</span></div>
+                    <table class="editorial-quiet-table">
+                        <thead><tr><th>Độc giả</th><th>Tài liệu</th><th>Hạn trả</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Nguyễn An</strong><small class="d-block text-muted">Mã TV-001</small></td><td>Những mùa đọc</td><td><span class="editorial-pill">12.06.2026</span></td></tr>
+                            <tr><td><strong>Lê Hà</strong><small class="d-block text-muted">Mã TV-014</small></td><td>Design of Everyday Things</td><td><span class="editorial-pill">16.06.2026</span></td></tr>
+                            <tr><td><strong>Trần Minh</strong><small class="d-block text-muted">Mã TV-028</small></td><td>Lịch sử thế giới</td><td><span class="editorial-pill">18.06.2026</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="editorial-panel h-100">
+                    <h3>Nhịp vận hành</h3>
+                    <p>Các chỉ số thực tế sẽ xuất hiện khi module mượn sách được kết nối.</p>
+                    <div class="editorial-stat mt-4"><strong>—</strong><span>Đang mượn</span></div>
+                    <div class="editorial-stat"><strong>—</strong><span>Sắp đến hạn</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

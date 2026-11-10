@@ -4,6 +4,7 @@
     ViewData["Title"] = "Sửa danh mục";
 }
 
+<div class="crud-page">
 <h2>Sửa danh mục</h2>
 
 <form asp-action="EditCategory" asp-route-id="@Model.CategoryId" method="post">
@@ -30,6 +31,7 @@
     <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
     <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
 </form>
+</div>
 
 @section Scripts {
     @{
