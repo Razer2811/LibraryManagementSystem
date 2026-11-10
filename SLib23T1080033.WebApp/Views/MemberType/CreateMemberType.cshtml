@@ -1,12 +1,10 @@
 ﻿@model SLib23T1080033.Models.Entities.MemberType
 
 @{
-    ViewData["Title"] = "Thêm loại độc giả";
+    ViewBag.Title = "Thêm loại độc giả";
 }
 
 <div class="crud-page">
-<h2>Thêm loại độc giả</h2>
-
 <form asp-action="CreateMemberType" method="post">
     @Html.AntiForgeryToken()
 

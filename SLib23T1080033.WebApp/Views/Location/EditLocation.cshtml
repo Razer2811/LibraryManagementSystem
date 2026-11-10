@@ -1,12 +1,10 @@
 ﻿@model SLib23T1080033.Models.Entities.Location
 
 @{
-    ViewData["Title"] = "Cập nhật vị trí";
+    ViewBag.Title = "Cập nhật vị trí";
 }
 
 <div class="crud-page">
-<h2>Cập nhật vị trí lưu trữ</h2>
-
 <form asp-action="EditLocation"
       asp-route-id="@Model.LocationId"
       method="post">
