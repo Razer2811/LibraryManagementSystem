@@ -8,7 +8,11 @@
 
 <div class="catalogue-index container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-
+        <div class="catalogue-search">
+            <i class="bi bi-search" aria-hidden="true"></i>
+            <input type="search" class="form-control" data-table-search="#category-table"
+                   placeholder="Tìm danh mục..." aria-label="Tìm kiếm danh mục" />
+        </div>
         <a asp-action="CreateCategory" class="btn btn-primary">
             + Thêm danh mục
         </a>
@@ -30,7 +34,7 @@
 
     <div class="card shadow-sm">
         <div class="card-body table-responsive">
-            <table class="table table-bordered table-hover align-middle">
+            <table id="category-table" class="table table-bordered table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
                         <th>Mã danh mục</th>

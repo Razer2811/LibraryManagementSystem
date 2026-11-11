@@ -21,12 +21,17 @@
 }
 
 <p>
+    <span class="catalogue-search">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input type="search" class="form-control" data-table-search="#member-type-table"
+               placeholder="Tìm loại độc giả..." aria-label="Tìm kiếm loại độc giả" />
+    </span>
     <a asp-action="CreateMemberType" class="btn btn-primary">
         Thêm loại độc giả
     </a>
 </p>
 
-<table class="table table-bordered table-striped">
+<table id="member-type-table" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>ID</th>

@@ -21,12 +21,17 @@
 }
 
 <p>
+    <span class="catalogue-search">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input type="search" class="form-control" data-table-search="#location-table"
+               placeholder="Tìm vị trí, mã kệ..." aria-label="Tìm kiếm vị trí" />
+    </span>
     <a asp-action="CreateLocation" class="btn btn-primary">
         Thêm vị trí
     </a>
 </p>
 
-<table class="table table-bordered table-striped">
+<table id="location-table" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Mã ID</th>

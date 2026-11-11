@@ -6,7 +6,11 @@
 
 <div class="catalogue-index container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-
+        <div class="catalogue-search">
+            <i class="bi bi-search" aria-hidden="true"></i>
+            <input type="search" class="form-control" data-table-search="#publisher-table"
+                   placeholder="Tìm nhà xuất bản, email..." aria-label="Tìm kiếm nhà xuất bản" />
+        </div>
         <a asp-action="CreatePublisher" class="btn btn-primary">
             + Thêm nhà xuất bản
         </a>
@@ -28,7 +32,7 @@
 
     <div class="card shadow-sm">
         <div class="card-body table-responsive">
-            <table class="table table-bordered table-hover align-middle">
+            <table id="publisher-table" class="table table-bordered table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
                         <th>Mã</th>

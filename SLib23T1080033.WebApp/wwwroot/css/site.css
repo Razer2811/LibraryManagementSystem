@@ -783,6 +783,56 @@ body {
   position: relative;
 }
 
+.catalogue-search {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: min(100%, 22rem);
+}
+
+.catalogue-search > i {
+  position: absolute;
+  left: 0.9rem;
+  z-index: 1;
+  color: #98a2b3;
+  pointer-events: none;
+}
+
+.catalogue-search .form-control {
+  min-height: 2.65rem;
+  padding-left: 2.45rem;
+  border-color: #d5dce7;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.catalogue-search .form-control:focus {
+  border-color: #2864d7;
+  box-shadow: 0 0 0 0.2rem rgba(40, 100, 215, 0.12);
+}
+
+.catalogue-index .d-flex {
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.catalogue-index > p {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.catalogue-index > p .catalogue-search {
+  display: inline-flex;
+}
+
+.search-no-results td {
+  padding: 2rem 1rem !important;
+  color: #667085;
+  text-align: center;
+}
+
 .catalogue-index::before {
   display: block;
   margin-bottom: 0.85rem;
