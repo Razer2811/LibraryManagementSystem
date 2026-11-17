@@ -1,89 +1,90 @@
-﻿@model SLib23T1080033.Models.Entities.Author
+﻿@model Author
 
 @{
     ViewData["Title"] = "Chỉnh sửa tác giả";
 }
 
-<div class="crud-page container mt-4">
+<!-- Tiêu đề + breadcrumb -->
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+        
+            <div class="col-sm-2">
+                <ol class="breadcrumb float-sm-end mb-0">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index">Tác giả</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <form asp-action="EditAuthor"
-                  asp-route-id="@Model.AuthorId"
-                  method="post">
+<div class="app-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-8 col-lg-10">
 
-                @Html.AntiForgeryToken()
+                <form method="post" action="/Author/SaveData">
+                    <input type="hidden" asp-route-id="@Model.AuthorId"/>
+                    <div class="card">
+                        <div class="card-body">
 
-                <div asp-validation-summary="ModelOnly"
-                     class="text-danger mb-3"></div>
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                <input type="hidden" asp-for="AuthorId" />
+                            <input type="hidden" asp-for="AuthorId" />
 
-                <div class="mb-3">
-                    <label asp-for="AuthorName" class="form-label">
-                        Tên tác giả
-                    </label>
-                    <input asp-for="AuthorName" class="form-control"
-                           placeholder="Nhập tên tác giả" />
-                    <span asp-validation-for="AuthorName"
-                          class="text-danger"></span>
-                </div>
+                            <div class="mb-3">
+                                <label asp-for="AuthorName" class="form-label">Tên tác giả</label>
+                                <input asp-for="AuthorName" class="form-control"
+                                       placeholder="Nhập tên tác giả" autofocus />
+                                <span asp-validation-for="AuthorName" class="text-danger small"></span>
+                            </div>
 
-                <div class="mb-3">
-                    <label asp-for="Biography" class="form-label">
-                        Tiểu sử
-                    </label>
-                    <textarea asp-for="Biography"
-                              class="form-control"
-                              rows="4"
-                              placeholder="Nhập tiểu sử tác giả"></textarea>
-                    <span asp-validation-for="Biography"
-                          class="text-danger"></span>
-                </div>
+                            <div class="mb-3">
+                                <label asp-for="Biography" class="form-label">Tiểu sử</label>
+                                <textarea asp-for="Biography" class="form-control" rows="5"
+                                          placeholder="Nhập tiểu sử tác giả"></textarea>
+                                <span asp-validation-for="Biography" class="text-danger small"></span>
+                            </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="BirthDate" class="form-label">
-                            Ngày sinh
-                        </label>
-                        <input asp-for="BirthDate"
-                               type="date"
-                               asp-format="{0:yyyy-MM-dd}"
-                               class="form-control" />
-                        <span asp-validation-for="BirthDate"
-                              class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="BirthDate" class="form-label">Ngày sinh</label>
+                                    <input asp-for="BirthDate" type="date"
+                                           asp-format="{0:yyyy-MM-dd}" class="form-control" />
+                                    <span asp-validation-for="BirthDate" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="DeathDate" class="form-label">Ngày mất</label>
+                                    <input asp-for="DeathDate" type="date"
+                                           asp-format="{0:yyyy-MM-dd}" class="form-control" />
+                                    <span asp-validation-for="DeathDate" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-check mb-0">
+                                <input asp-for="IsActive" class="form-check-input" />
+                                <label asp-for="IsActive" class="form-check-label">Đang hoạt động</label>
+                            </div>
+
+                        </div>
+
+                        <!-- Hàng nút: lưu bên trái, quay lại bên cạnh -->
+                        <div class="card-footer d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-dark">
+                                <i class="bi bi-check-lg me-1"></i>Lưu thay đổi
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me   -1"></i>Quay lại
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="DeathDate" class="form-label">
-                            Ngày mất
-                        </label>
-                        <input asp-for="DeathDate"
-                               type="date"
-                               asp-format="{0:yyyy-MM-dd}"
-                               class="form-control" />
-                        <span asp-validation-for="DeathDate"
-                              class="text-danger"></span>
-                    </div>
-                </div>
+                </form>
 
-                <div class="form-check mb-4">
-                    <input asp-for="IsActive"
-                           class="form-check-input" />
-                    <label asp-for="IsActive"
-                           class="form-check-label">
-                        Đang hoạt động
-                    </label>
-                </div>
-
-                <button type="submit" class="btn btn-primary">
-                    Lưu thay đổi
-                </button>
-
-                <a asp-action="Index" class="btn btn-secondary">
-                    Quay lại
-                </a>
-            </form>
+            </div>
         </div>
     </div>
 </div>

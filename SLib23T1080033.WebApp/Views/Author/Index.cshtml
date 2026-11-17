@@ -1,11 +1,107 @@
-﻿
-@model IEnumerable<SLib23T1080033.Models.Entities.Author>
+﻿@model IEnumerable<Author>
 
 @{
     ViewBag.Title = "Quản lý tác giả";
 }
 
-<div class="catalogue-index container mt-4">
+<!-- Views/Author/Index.cshtml : phần nội dung nằm trong layout AdminLTE -->
+<!-- Tiêu đề + breadcrumb -->
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            
+            <div class="col-sm-2">
+                <ol class="breadcrumb float-sm-end mb-0">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Tác giả</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+        <div class="card">
+
+            <!-- Hàng trên cùng: tìm kiếm + nút thêm -->
+            <div class="card-header">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+
+                    <form method="get" action="/Author" class="flex-grow-1" style="max-width: 420px;">
+                        <div class="input-group">
+                            <input type="search" name="keyword" class="form-control"
+                                   placeholder="Tìm theo tên tác giả"
+                                   aria-label="Từ khóa tìm kiếm" />
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <i class="bi bi-search me-1"></i>Search
+                            </button>
+                        </div>
+                    </form>
+
+                    <a href="/Author/CreateAuthor" class="btn btn-dark">
+                        <i class="bi bi-plus-lg me-1"></i>Thêm tác giả
+                    </a>
+                </div>
+            </div>
+
+            <!-- Danh sách -->
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 author-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Tên tác giả</th>
+                                <th scope="col">Tiểu sử</th>
+                                <th scope="col">Ngày sinh</th>
+                                <th scope="col">Ngày mất</th>
+                                <th scope="col">Đang hoạt động</th>
+                                <th scope="col" class="text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var author in Model)
+                            {
+                                <tr>
+                                    <td class="fw-medium">@author.AuthorName</td>
+                                    <td class="author-bio text-truncate" title="@author.Biography">
+                                        @author.Biography
+                                    </td>
+                                    <td class="col-date">@(author.BirthDate?.ToString("dd/MM/yyyy") ?? "—")</td>
+                                    <td class="col-date text-secondary">@(author.DeathDate?.ToString("dd/MM/yyyy") ?? "—")</td>
+     
+                                    <td>
+                                        @if (author.IsActive)
+                                        {
+                                            <span class="badge bg-success-subtle text-success-emphasis fw-medium">Hoạt động</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary-subtle text-secondary-emphasis fw-medium">Ngừng hoạt động</span>
+                                        }
+                                    </td>
+                                    <td class="text-end text-nowrap">
+                                        <a href="/Author/EditAuthor/@author.AuthorId" class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-pencil me-1"></i>   
+                                        </a>
+                                        <a href="/Author/DeleteAuthor/@author.AuthorId" class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('Bạn có chắc muốn xóa tác giả này?');">
+                                            <i class="bi bi-trash me-1"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            }
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@* <div class="catalogue-index container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="catalogue-search">
             <i class="bi bi-search" aria-hidden="true"></i>
@@ -23,7 +119,6 @@
                 <table id="author-table" class="table table-bordered table-hover align-middle">
                     <thead class="table-dark">
                         <tr>
-                            <th style="width: 70px;">Mã TG</th>
                             <th>Tên tác giả</th>
                             <th>Tiểu sử</th>
                             <th>Ngày sinh</th>
@@ -39,7 +134,6 @@
                             foreach (var author in Model)
                             {
                                 <tr>
-                                    <td>@author.AuthorId</td>
                                     <td>@author.AuthorName</td>
                                     <td>
                                         @(string.IsNullOrWhiteSpace(author.Biography)
@@ -91,4 +185,29 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
+
+
+
+<style>
+    /* Chỉ vài dòng bổ sung, không cần file CSS riêng */
+    .author-table th {
+        font-weight: 500;
+        font-size: .8125rem;
+        color: var(--bs-secondary-color);
+        white-space: nowrap;
+    }
+
+    .author-table td {
+        vertical-align: middle;
+    }
+
+    .author-table .col-date {
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+    }
+
+    .author-bio {
+        max-width: 360px;
+    }
+</style>
