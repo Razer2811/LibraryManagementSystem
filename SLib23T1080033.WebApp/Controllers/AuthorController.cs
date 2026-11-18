@@ -25,8 +25,9 @@ namespace SLib23T1080033.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = ex.Message;
-                return View(Enumerable.Empty<Author>());
+                // Ghi lại lỗi
+                // Chuyển hướng đến trang lỗi hoặc hiển thị thông báo lỗi
+                return Content("Hệ thống đang quá tải. Vui lòng thử lại sau.");
             }
         }
 
@@ -65,8 +66,9 @@ namespace SLib23T1080033.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = ex.Message;
-                return RedirectToAction(nameof(Index));
+                // Ghi lại lỗi
+                // Chuyển hướng đến trang lỗi hoặc hiển thị thông báo lỗi
+                return Content("Hệ thống đang quá tải. Vui lòng thử lại sau.");
             }
         }
 

@@ -1,18 +1,123 @@
 @model IEnumerable<Publisher>
-@{ ViewBag.Title = "Quản lý nhà xuất bản"; }
 
-<div class="app-content"><div class="container-fluid">
-    @if (TempData["SuccessMessage"] != null) { <div class="alert alert-success alert-dismissible fade show">@TempData["SuccessMessage"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div> }
-    @if (TempData["ErrorMessage"] != null) { <div class="alert alert-danger alert-dismissible fade show">@TempData["ErrorMessage"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div> }
-    <div class="card">
-        <div class="card-header"><div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-            <form method="get" asp-action="Index" class="flex-grow-1" style="max-width:420px"><div class="input-group"><input type="search" name="keyword" value="@ViewBag.Keyword" class="form-control" placeholder="Tìm nhà xuất bản, địa chỉ hoặc email" /><button class="btn btn-outline-secondary"><i class="bi bi-search"></i></button></div></form>
-            <a asp-action="CreatePublisher" class="btn btn-dark"><i class="bi bi-plus-lg me-1"></i>Thêm nhà xuất bản</a>
-        </div></div>
-        <div class="card-body p-0 table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Tên nhà xuất bản</th><th>Địa chỉ</th><th>Điện thoại</th><th>Email</th><th>Website</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead><tbody>
-        @foreach (var item in Model) {
-            <tr><td class="fw-medium">@item.PublisherName</td><td>@(item.Address ?? "—")</td><td>@(item.Phone ?? "—")</td><td>@(item.Email ?? "—")</td><td>@(item.Website ?? "—")</td><td>@if(item.IsActive){<span class="badge bg-success-subtle text-success-emphasis">Hoạt động</span>}else{<span class="badge bg-secondary-subtle text-secondary-emphasis">Ngừng hoạt động</span>}</td><td class="text-end text-nowrap"><a asp-action="EditPublisher" asp-route-id="@item.PublisherId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a> <a asp-action="DeletePublisher" asp-route-id="@item.PublisherId" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a></td></tr>
-        }
-        </tbody></table></div>
+@{
+    ViewBag.Title = "Quản lý nhà xuất bản";
+}
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <ol class="breadcrumb float-sm-end mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Nhà xuất bản</li>
+        </ol>
     </div>
-</div></div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        }
+
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <form method="get" asp-action="Index" class="flex-grow-1" style="max-width: 420px;">
+                        <div class="input-group">
+                            <input type="search"
+                                   name="keyword"
+                                   value="@ViewBag.Keyword"
+                                   class="form-control"
+                                   placeholder="Tìm nhà xuất bản, địa chỉ hoặc email"
+                                   aria-label="Từ khóa tìm kiếm" />
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <i class="bi bi-search me-1"></i>Tìm
+                            </button>
+                        </div>
+                    </form>
+
+                    <a asp-action="CreatePublisher" class="btn btn-dark">
+                        <i class="bi bi-plus-lg me-1"></i>Thêm nhà xuất bản
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Tên nhà xuất bản</th>
+                                <th>Địa chỉ</th>
+                                <th>Điện thoại</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Trạng thái</th>
+                                <th class="text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="fw-medium">@item.PublisherName</td>
+                                        <td>@(item.Address ?? "—")</td>
+                                        <td>@(item.Phone ?? "—")</td>
+                                        <td>@(item.Email ?? "—")</td>
+                                        <td>@(item.Website ?? "—")</td>
+                                        <td>
+                                            @if (item.IsActive)
+                                            {
+                                                <span class="badge bg-success-subtle text-success-emphasis">Hoạt động</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary-subtle text-secondary-emphasis">Ngừng hoạt động</span>
+                                            }
+                                        </td>
+                                        <td class="text-end text-nowrap">
+                                            <a asp-action="EditPublisher"
+                                               asp-route-id="@item.PublisherId"
+                                               class="btn btn-sm btn-outline-secondary"
+                                               title="Sửa">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="DeletePublisher"
+                                               asp-route-id="@item.PublisherId"
+                                               class="btn btn-sm btn-outline-danger"
+                                               title="Xóa">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="7" class="text-center text-secondary py-4">
+                                        Chưa có dữ liệu nhà xuất bản.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
