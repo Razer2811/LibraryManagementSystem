@@ -4,15 +4,20 @@
     ViewBag.Title = "Quản lý ngôn ngữ";
 }
 
+<!-- Tiêu đề + breadcrumb -->
 <div class="app-content-header">
     <div class="container-fluid">
-        <ol class="breadcrumb float-sm-end mb-0">
-            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Ngôn ngữ</li>
-        </ol>
+        <div class="row align-items-center">
+
+            <div class="col-sm-2">
+                <ol class="breadcrumb float-sm-end mb-0">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Ngôn ngữ</li>
+                </ol>
+            </div>
+        </div>
     </div>
 </div>
-
 <div class="app-content">
     <div class="container-fluid">
         @if (TempData["SuccessMessage"] != null)
@@ -59,7 +64,6 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Mã ngôn ngữ</th>
                                 <th>Tên ngôn ngữ</th>
                                 <th>Trạng thái</th>
                                 <th class="text-end">Thao tác</th>
@@ -71,7 +75,6 @@
                                 foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td class="fw-medium">@item.LanguageCode</td>
                                         <td>@item.LanguageName</td>
                                         <td>
                                             @if (item.IsActive)
@@ -93,7 +96,8 @@
                                             <a asp-action="DeleteLanguage"
                                                asp-route-id="@item.LanguageId"
                                                class="btn btn-sm btn-outline-danger"
-                                               title="Xóa">
+                                               title="Xóa"
+                                               onclick="return confirm('Bạn có chắc muốn xóa ngôn ngữ này không?');">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </td>

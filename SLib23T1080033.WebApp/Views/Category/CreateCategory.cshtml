@@ -4,9 +4,10 @@
     ViewData["Title"] = "Thêm danh mục";
 }
 
+<!-- Breadcrumb: một dòng, căn trái thẳng hàng với tiêu đề -->
 <div class="app-content-header">
     <div class="container-fluid">
-        <ol class="breadcrumb float-sm-end mb-0">
+        <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
             <li class="breadcrumb-item"><a asp-action="Index">Danh mục</a></li>
             <li class="breadcrumb-item active" aria-current="page">Thêm danh mục</li>
@@ -16,46 +17,58 @@
 
 <div class="app-content">
     <div class="container-fluid">
-        <div class="col-xl-8 col-lg-10">
-            <form asp-action="CreateCategory" method="post">
-                @Html.AntiForgeryToken()
-                <div class="card">
-                    <div class="card-body">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10">
 
-                        <div class="mb-3">
-                            <label asp-for="CategoryName" class="form-label">Tên danh mục</label>
-                            <input asp-for="CategoryName" class="form-control" placeholder="Nhập tên danh mục" />
-                            <span asp-validation-for="CategoryName" class="text-danger"></span>
+                <form asp-action="CreateCategory" method="post">
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                            <div class="mb-3">
+                                <label asp-for="CategoryName" class="form-label">Tên danh mục</label>
+                                <input asp-for="CategoryName" class="form-control"
+                                       placeholder="Nhập tên danh mục" autofocus />
+                                <span asp-validation-for="CategoryName" class="text-danger small"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ParentCategoryId" class="form-label">Danh mục cha</label>
+                                <select asp-for="ParentCategoryId" asp-items="ViewBag.ParentCategories" class="form-select">
+                                    <option value="">-- Không có danh mục cha --</option>
+                                </select>
+                                <span asp-validation-for="ParentCategoryId" class="text-danger small"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Description" class="form-label">Mô tả</label>
+                                <textarea asp-for="Description" class="form-control" rows="4"
+                                          placeholder="Nhập mô tả danh mục"></textarea>
+                                <span asp-validation-for="Description" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-check mb-0">
+                                <input asp-for="IsActive" class="form-check-input" />
+                                <label asp-for="IsActive" class="form-check-label">Đang hoạt động</label>
+                            </div>
+
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="ParentCategoryId" class="form-label">Danh mục cha</label>
-                            <select asp-for="ParentCategoryId" asp-items="ViewBag.ParentCategories" class="form-select">
-                                <option value="">-- Không có danh mục cha --</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="Description" class="form-label">Mô tả</label>
-                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-                        </div>
-
-                        <div class="form-check">
-                            <input asp-for="IsActive" class="form-check-input" />
-                            <label asp-for="IsActive" class="form-check-label">Đang hoạt động</label>
+                        <div class="card-footer d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-dark">
+                                <i class="bi bi-check-lg me-1"></i>Thêm danh mục
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Quay lại
+                            </a>
                         </div>
                     </div>
-                    <div class="card-footer d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-dark">
-                            <i class="bi bi-check-lg me-1"></i>Thêm danh mục
-                        </button>
-                        <a asp-action="Index" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-left me-1"></i>Quay lại
-                        </a>
-                    </div>
-                </div>
-            </form>
+
+                </form>
+
+            </div>
         </div>
     </div>
 </div>

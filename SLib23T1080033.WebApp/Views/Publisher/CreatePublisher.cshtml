@@ -1,47 +1,83 @@
 @model Publisher
-@{ ViewData["Title"] = "Thêm nhà xuất bản"; }
+
+@{
+    ViewData["Title"] = "Thêm nhà xuất bản";
+}
+
+<!-- Breadcrumb: một dòng, căn trái thẳng hàng với tiêu đề -->
+<div class="app-content-header">
+    <div class="container-fluid">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Nhà xuất bản</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Thêm nhà xuất bản</li>
+        </ol>
+    </div>
+</div>
 
 <div class="app-content">
     <div class="container-fluid">
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-xl-8 col-lg-10">
+
                 <form asp-action="CreatePublisher" method="post">
-                    @Html.AntiForgeryToken()
+
                     <div class="card">
                         <div class="card-body">
+
                             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
                             <div class="mb-3">
                                 <label asp-for="PublisherName" class="form-label">Tên nhà xuất bản</label>
-                                <input asp-for="PublisherName" class="form-control" placeholder="Nhập tên nhà xuất bản" />
-                                <span asp-validation-for="PublisherName" class="text-danger"></span>
+                                <input asp-for="PublisherName" class="form-control"
+                                       placeholder="Nhập tên nhà xuất bản" autofocus />
+                                <span asp-validation-for="PublisherName" class="text-danger small"></span>
                             </div>
+
                             <div class="mb-3">
                                 <label asp-for="Address" class="form-label">Địa chỉ</label>
                                 <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ" />
+                                <span asp-validation-for="Address" class="text-danger small"></span>
                             </div>
-                            <div class="mb-3">
-                                <label asp-for="Phone" class="form-label">Điện thoại</label>
-                                <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Phone" class="form-label">Điện thoại</label>
+                                    <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                                    <span asp-validation-for="Phone" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Email" class="form-label">Email</label>
+                                    <input asp-for="Email" type="email" class="form-control" placeholder="Nhập email" />
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label asp-for="Email" class="form-label">Email</label>
-                                <input asp-for="Email" type="email" class="form-control" placeholder="Nhập email" />
-                            </div>
+
                             <div class="mb-3">
                                 <label asp-for="Website" class="form-label">Website</label>
                                 <input asp-for="Website" type="url" class="form-control" placeholder="https://example.com" />
+                                <span asp-validation-for="Website" class="text-danger small"></span>
                             </div>
-                            <div class="form-check">
+
+                            <div class="form-check mb-0">
                                 <input asp-for="IsActive" class="form-check-input" />
                                 <label asp-for="IsActive" class="form-check-label">Đang hoạt động</label>
                             </div>
+
                         </div>
-                        <div class="card-footer d-flex gap-2">
-                            <button type="submit" class="btn btn-dark"><i class="bi bi-check-lg me-1"></i>Thêm nhà xuất bản</button>
-                            <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Quay lại</a>
+
+                        <div class="card-footer d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-dark">
+                                <i class="bi bi-check-lg me-1"></i>Thêm nhà xuất bản
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Quay lại
+                            </a>
                         </div>
                     </div>
+
                 </form>
+
             </div>
         </div>
     </div>

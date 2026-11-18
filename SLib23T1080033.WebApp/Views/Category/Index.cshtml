@@ -99,7 +99,8 @@
                                             <a asp-action="DeleteCategory"
                                                asp-route-id="@item.CategoryId"
                                                class="btn btn-sm btn-outline-danger"
-                                               title="Xóa">
+                                               title="Xóa"
+                                               onclick="return confirm('Bạn có chắc muốn xóa danh mục này không?');">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </td>
