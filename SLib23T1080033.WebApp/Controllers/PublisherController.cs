@@ -1,51 +1,53 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using SLib23T1080033.BusinessLayer;
 using SLib23T1080033.Models.Entities;
 
 namespace SLib23T1080033.WebApp.Controllers
 {
-    public class PublisherController(PublisherService publisherService)
-        : Controller
+    public class PublisherController(PublisherService publisherService) : Controller
     {
         [HttpGet]
         public async Task<IActionResult> Index(string? keyword)
         {
-            var publishers = await publisherService.ListAsync();
-            if (!string.IsNullOrWhiteSpace(keyword))
+            try
             {
-                publishers = publishers.Where(p =>
-                    p.PublisherName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
-                    (p.Address?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (p.Email?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false));
+                var publishers = await publisherService.ListAsync();
+
+                if (!string.IsNullOrWhiteSpace(keyword))
+                {
+                    publishers = publishers.Where(publisher =>
+                        publisher.PublisherName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                        (publisher.Address?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                        (publisher.Email?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false));
+                }
+
+                ViewBag.Keyword = keyword?.Trim();
+                return View(publishers);
             }
-            ViewBag.Keyword = keyword?.Trim();
-            return View(publishers);
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return View(Enumerable.Empty<Publisher>());
+            }
         }
 
-        // GET: Hiển thị form thêm nhà xuất bản
         [HttpGet]
         public IActionResult CreatePublisher()
         {
-            return View();
+            return View(new Publisher { IsActive = true });
         }
 
-        // POST: Xử lý thêm nhà xuất bản
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePublisher(Publisher publisher)
         {
             if (!ModelState.IsValid)
-            {
                 return View(publisher);
-            }
 
             try
             {
                 await publisherService.AddAsync(publisher);
-
-                TempData["SuccessMessage"] =
-                    "Thêm nhà xuất bản thành công!";
-
+                TempData["SuccessMessage"] = "Thêm nhà xuất bản thành công.";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -55,14 +57,12 @@ namespace SLib23T1080033.WebApp.Controllers
             }
         }
 
-        // GET: Hiển thị form chỉnh sửa nhà xuất bản
         [HttpGet]
         public async Task<IActionResult> EditPublisher(int id)
         {
             try
             {
-                var publisher = await publisherService.GetAsync(id);
-                return View(publisher);
+                return View(await publisherService.GetAsync(id));
             }
             catch (Exception ex)
             {
@@ -71,38 +71,21 @@ namespace SLib23T1080033.WebApp.Controllers
             }
         }
 
-        // POST: Xử lý cập nhật nhà xuất bản
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPublisher(
-            int id, Publisher publisher)
+        public async Task<IActionResult> EditPublisher(int id, Publisher publisher)
         {
             if (id != publisher.PublisherId)
-            {
                 return BadRequest();
-            }
 
             if (!ModelState.IsValid)
-            {
                 return View(publisher);
-            }
 
             try
             {
-                var result = await publisherService.UpdateAsync(publisher);
-
-                if (result)
-                {
-                    TempData["SuccessMessage"] =
-                        "Cập nhật nhà xuất bản thành công!";
-
-                    return RedirectToAction(nameof(Index));
-                }
-
-                ModelState.AddModelError(
-                    string.Empty, "Không thể cập nhật nhà xuất bản.");
-
-                return View(publisher);
+                await publisherService.UpdateAsync(publisher);
+                TempData["SuccessMessage"] = "Cập nhật nhà xuất bản thành công.";
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
@@ -111,14 +94,12 @@ namespace SLib23T1080033.WebApp.Controllers
             }
         }
 
-        // GET: Hiển thị trang xác nhận xóa nhà xuất bản
         [HttpGet]
         public async Task<IActionResult> DeletePublisher(int id)
         {
             try
             {
-                var publisher = await publisherService.GetAsync(id);
-                return View(publisher);
+                return View(await publisherService.GetAsync(id));
             }
             catch (Exception ex)
             {
@@ -127,33 +108,21 @@ namespace SLib23T1080033.WebApp.Controllers
             }
         }
 
-        // POST: Xử lý xóa nhà xuất bản
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePublisherConfirmed(int id)
         {
             try
             {
-                var result = await publisherService.DeleteAsync(id);
-
-                if (result)
-                {
-                    TempData["SuccessMessage"] =
-                        "Xóa nhà xuất bản thành công!";
-                }
-                else
-                {
-                    TempData["ErrorMessage"] =
-                        "Không thể xóa nhà xuất bản.";
-                }
-
-                return RedirectToAction(nameof(Index));
+                await publisherService.DeleteAsync(id);
+                TempData["SuccessMessage"] = "Xóa nhà xuất bản thành công.";
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
-                return RedirectToAction(nameof(Index));
             }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

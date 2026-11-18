@@ -1,4 +1,3 @@
-﻿
 using Microsoft.AspNetCore.Mvc;
 using SLib23T1080033.BusinessLayer;
 using SLib23T1080033.Models.Entities;
@@ -10,16 +9,26 @@ public class LocationController(LocationService locationService) : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string? keyword)
     {
-        var locations = await locationService.ListAsync();
-        if (!string.IsNullOrWhiteSpace(keyword))
+        try
         {
-            locations = locations.Where(l =>
-                l.LocationCode.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
-                l.LocationName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
-                (l.Room?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false));
+            var locations = await locationService.ListAsync();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                locations = locations.Where(location =>
+                    location.LocationCode.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                    location.LocationName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                    (location.Room?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false));
+            }
+
+            ViewBag.Keyword = keyword?.Trim();
+            return View(locations);
         }
-        ViewBag.Keyword = keyword?.Trim();
-        return View(locations);
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+            return View(Enumerable.Empty<Location>());
+        }
     }
 
     [HttpGet]
@@ -38,8 +47,7 @@ public class LocationController(LocationService locationService) : Controller
         try
         {
             await locationService.AddAsync(location);
-
-            TempData["SuccessMessage"] = "Thêm vị trí thành công!";
+            TempData["SuccessMessage"] = "Thêm vị trí thành công.";
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
@@ -54,8 +62,7 @@ public class LocationController(LocationService locationService) : Controller
     {
         try
         {
-            var location = await locationService.GetAsync(id);
-            return View(location);
+            return View(await locationService.GetAsync(id));
         }
         catch (Exception ex)
         {
@@ -66,8 +73,7 @@ public class LocationController(LocationService locationService) : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditLocation(
-        int id, Location location)
+    public async Task<IActionResult> EditLocation(int id, Location location)
     {
         if (id != location.LocationId)
             return BadRequest();
@@ -77,18 +83,9 @@ public class LocationController(LocationService locationService) : Controller
 
         try
         {
-            var result = await locationService.UpdateAsync(location);
-
-            if (result)
-            {
-                TempData["SuccessMessage"] = "Cập nhật vị trí thành công!";
-                return RedirectToAction(nameof(Index));
-            }
-
-            ModelState.AddModelError(
-                string.Empty, "Không thể cập nhật vị trí.");
-
-            return View(location);
+            await locationService.UpdateAsync(location);
+            TempData["SuccessMessage"] = "Cập nhật vị trí thành công.";
+            return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
@@ -102,8 +99,7 @@ public class LocationController(LocationService locationService) : Controller
     {
         try
         {
-            var location = await locationService.GetAsync(id);
-            return View(location);
+            return View(await locationService.GetAsync(id));
         }
         catch (Exception ex)
         {
@@ -118,12 +114,8 @@ public class LocationController(LocationService locationService) : Controller
     {
         try
         {
-            var result = await locationService.DeleteAsync(id);
-
-            if (result)
-                TempData["SuccessMessage"] = "Xóa vị trí thành công!";
-            else
-                TempData["ErrorMessage"] = "Không thể xóa vị trí.";
+            await locationService.DeleteAsync(id);
+            TempData["SuccessMessage"] = "Xóa vị trí thành công.";
         }
         catch (Exception ex)
         {

@@ -1,45 +1,52 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using SLib23T1080033.BusinessLayer;
 using SLib23T1080033.Models.Entities;
 
 namespace SLib23T1080033.WebApp.Controllers;
 
-public class CategoryController(CategoryService categoryService)
-    : Controller
+public class CategoryController(CategoryService categoryService) : Controller
 {
     [HttpGet]
     public async Task<IActionResult> Index(string? keyword)
     {
-        var categories = await categoryService.ListAsync();
-        if (!string.IsNullOrWhiteSpace(keyword))
+        try
         {
-            categories = categories.Where(c =>
-                c.CategoryName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
-                (c.Description?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false));
+            var categories = await categoryService.ListAsync();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                categories = categories.Where(category =>
+                    category.CategoryName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                    (category.Description?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false));
+            }
+
+            ViewBag.Keyword = keyword?.Trim();
+            return View(categories);
         }
-        ViewBag.Keyword = keyword?.Trim();
-        return View(categories);
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+            return View(Enumerable.Empty<Category>());
+        }
     }
 
-    // Chuẩn bị danh sách danh mục cha cho form
     private async Task LoadParentCategoriesAsync(int? currentCategoryId = null)
     {
         var categories = await categoryService.ListAsync();
-
-        ViewBag.ParentCategories = categories
-            .Where(c => c.CategoryId != currentCategoryId)
-            .ToList();
+        ViewBag.ParentCategories = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+            categories.Where(category => category.CategoryId != currentCategoryId),
+            nameof(Category.CategoryId),
+            nameof(Category.CategoryName),
+            null);
     }
 
-    // Hiển thị form thêm
     [HttpGet]
     public async Task<IActionResult> CreateCategory()
     {
         await LoadParentCategoriesAsync();
-        return View();
+        return View(new Category { IsActive = true });
     }
 
-    // Xử lý thêm
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateCategory(Category category)
@@ -53,9 +60,7 @@ public class CategoryController(CategoryService categoryService)
         try
         {
             await categoryService.AddAsync(category);
-
-            TempData["SuccessMessage"] = "Thêm danh mục thành công!";
-
+            TempData["SuccessMessage"] = "Thêm danh mục thành công.";
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
@@ -66,16 +71,13 @@ public class CategoryController(CategoryService categoryService)
         }
     }
 
-    // Hiển thị form sửa
     [HttpGet]
     public async Task<IActionResult> EditCategory(int id)
     {
         try
         {
             var category = await categoryService.GetAsync(id);
-
             await LoadParentCategoriesAsync(category.CategoryId);
-
             return View(category);
         }
         catch (Exception ex)
@@ -85,7 +87,6 @@ public class CategoryController(CategoryService categoryService)
         }
     }
 
-    // Xử lý sửa
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditCategory(int id, Category category)
@@ -101,19 +102,9 @@ public class CategoryController(CategoryService categoryService)
 
         try
         {
-            var result = await categoryService.UpdateAsync(category);
-
-            if (result)
-            {
-                TempData["SuccessMessage"] = "Cập nhật danh mục thành công!";
-                return RedirectToAction(nameof(Index));
-            }
-
-            ModelState.AddModelError(
-                string.Empty, "Không thể cập nhật danh mục.");
-
-            await LoadParentCategoriesAsync(category.CategoryId);
-            return View(category);
+            await categoryService.UpdateAsync(category);
+            TempData["SuccessMessage"] = "Cập nhật danh mục thành công.";
+            return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
@@ -123,14 +114,12 @@ public class CategoryController(CategoryService categoryService)
         }
     }
 
-    // Hiển thị trang xác nhận xóa
     [HttpGet]
     public async Task<IActionResult> DeleteCategory(int id)
     {
         try
         {
-            var category = await categoryService.GetAsync(id);
-            return View(category);
+            return View(await categoryService.GetAsync(id));
         }
         catch (Exception ex)
         {
@@ -139,19 +128,14 @@ public class CategoryController(CategoryService categoryService)
         }
     }
 
-    // Xử lý xóa
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteCategoryConfirmed(int id)
     {
         try
         {
-            var result = await categoryService.DeleteAsync(id);
-
-            if (result)
-                TempData["SuccessMessage"] = "Xóa danh mục thành công!";
-            else
-                TempData["ErrorMessage"] = "Không thể xóa danh mục.";
+            await categoryService.DeleteAsync(id);
+            TempData["SuccessMessage"] = "Xóa danh mục thành công.";
         }
         catch (Exception ex)
         {

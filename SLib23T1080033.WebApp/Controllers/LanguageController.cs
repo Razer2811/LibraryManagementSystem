@@ -1,35 +1,41 @@
-﻿
 using Microsoft.AspNetCore.Mvc;
 using SLib23T1080033.BusinessLayer;
 using SLib23T1080033.Models.Entities;
 
 namespace SLib23T1080033.WebApp.Controllers;
 
-public class LanguageController(LanguageService languageService)
-    : Controller
+public class LanguageController(LanguageService languageService) : Controller
 {
     [HttpGet]
     public async Task<IActionResult> Index(string? keyword)
     {
-        var languages = await languageService.ListAsync();
-        if (!string.IsNullOrWhiteSpace(keyword))
+        try
         {
-            languages = languages.Where(l =>
-                l.LanguageName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
-                l.LanguageCode.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+            var languages = await languageService.ListAsync();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                languages = languages.Where(language =>
+                    language.LanguageName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                    language.LanguageCode.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+            }
+
+            ViewBag.Keyword = keyword?.Trim();
+            return View(languages);
         }
-        ViewBag.Keyword = keyword?.Trim();
-        return View(languages);
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+            return View(Enumerable.Empty<Language>());
+        }
     }
 
-    // Hiển thị form thêm
     [HttpGet]
     public IActionResult CreateLanguage()
     {
-        return View();
+        return View(new Language { IsActive = true });
     }
 
-    // Xử lý thêm
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateLanguage(Language language)
@@ -40,9 +46,7 @@ public class LanguageController(LanguageService languageService)
         try
         {
             await languageService.AddAsync(language);
-
-            TempData["SuccessMessage"] = "Thêm ngôn ngữ thành công!";
-
+            TempData["SuccessMessage"] = "Thêm ngôn ngữ thành công.";
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
@@ -52,14 +56,12 @@ public class LanguageController(LanguageService languageService)
         }
     }
 
-    // Hiển thị form sửa
     [HttpGet]
     public async Task<IActionResult> EditLanguage(int id)
     {
         try
         {
-            var language = await languageService.GetAsync(id);
-            return View(language);
+            return View(await languageService.GetAsync(id));
         }
         catch (Exception ex)
         {
@@ -68,11 +70,9 @@ public class LanguageController(LanguageService languageService)
         }
     }
 
-    // Xử lý sửa
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditLanguage(
-        int id, Language language)
+    public async Task<IActionResult> EditLanguage(int id, Language language)
     {
         if (id != language.LanguageId)
             return BadRequest();
@@ -82,20 +82,9 @@ public class LanguageController(LanguageService languageService)
 
         try
         {
-            var result = await languageService.UpdateAsync(language);
-
-            if (result)
-            {
-                TempData["SuccessMessage"] =
-                    "Cập nhật ngôn ngữ thành công!";
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            ModelState.AddModelError(
-                string.Empty, "Không thể cập nhật ngôn ngữ.");
-
-            return View(language);
+            await languageService.UpdateAsync(language);
+            TempData["SuccessMessage"] = "Cập nhật ngôn ngữ thành công.";
+            return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
@@ -104,14 +93,12 @@ public class LanguageController(LanguageService languageService)
         }
     }
 
-    // Hiển thị trang xác nhận xóa
     [HttpGet]
     public async Task<IActionResult> DeleteLanguage(int id)
     {
         try
         {
-            var language = await languageService.GetAsync(id);
-            return View(language);
+            return View(await languageService.GetAsync(id));
         }
         catch (Exception ex)
         {
@@ -120,19 +107,14 @@ public class LanguageController(LanguageService languageService)
         }
     }
 
-    // Xử lý xóa
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteLanguageConfirmed(int id)
     {
         try
         {
-            var result = await languageService.DeleteAsync(id);
-
-            if (result)
-                TempData["SuccessMessage"] = "Xóa ngôn ngữ thành công!";
-            else
-                TempData["ErrorMessage"] = "Không thể xóa ngôn ngữ.";
+            await languageService.DeleteAsync(id);
+            TempData["SuccessMessage"] = "Xóa ngôn ngữ thành công.";
         }
         catch (Exception ex)
         {

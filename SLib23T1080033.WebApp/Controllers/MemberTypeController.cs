@@ -1,4 +1,3 @@
-﻿
 using Microsoft.AspNetCore.Mvc;
 using SLib23T1080033.BusinessLayer;
 using SLib23T1080033.Models.Entities;
@@ -10,20 +9,30 @@ public class MemberTypeController(MemberTypeService memberTypeService) : Control
     [HttpGet]
     public async Task<IActionResult> Index(string? keyword)
     {
-        var memberTypes = await memberTypeService.ListAsync();
-        if (!string.IsNullOrWhiteSpace(keyword))
+        try
         {
-            memberTypes = memberTypes.Where(m =>
-                m.TypeName.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+            var memberTypes = await memberTypeService.ListAsync();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                memberTypes = memberTypes.Where(memberType =>
+                    memberType.TypeName.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+            }
+
+            ViewBag.Keyword = keyword?.Trim();
+            return View(memberTypes);
         }
-        ViewBag.Keyword = keyword?.Trim();
-        return View(memberTypes);
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+            return View(Enumerable.Empty<MemberType>());
+        }
     }
 
     [HttpGet]
     public IActionResult CreateMemberType()
     {
-        return View();
+        return View(new MemberType { IsActive = true });
     }
 
     [HttpPost]
@@ -36,8 +45,7 @@ public class MemberTypeController(MemberTypeService memberTypeService) : Control
         try
         {
             await memberTypeService.AddAsync(memberType);
-
-            TempData["SuccessMessage"] = "Thêm loại độc giả thành công!";
+            TempData["SuccessMessage"] = "Thêm loại độc giả thành công.";
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
@@ -52,8 +60,7 @@ public class MemberTypeController(MemberTypeService memberTypeService) : Control
     {
         try
         {
-            var memberType = await memberTypeService.GetAsync(id);
-            return View(memberType);
+            return View(await memberTypeService.GetAsync(id));
         }
         catch (Exception ex)
         {
@@ -64,8 +71,7 @@ public class MemberTypeController(MemberTypeService memberTypeService) : Control
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditMemberType(
-        int id, MemberType memberType)
+    public async Task<IActionResult> EditMemberType(int id, MemberType memberType)
     {
         if (id != memberType.MemberTypeId)
             return BadRequest();
@@ -75,18 +81,9 @@ public class MemberTypeController(MemberTypeService memberTypeService) : Control
 
         try
         {
-            var result = await memberTypeService.UpdateAsync(memberType);
-
-            if (result)
-            {
-                TempData["SuccessMessage"] = "Cập nhật loại độc giả thành công!";
-                return RedirectToAction(nameof(Index));
-            }
-
-            ModelState.AddModelError(
-                string.Empty, "Không thể cập nhật loại độc giả.");
-
-            return View(memberType);
+            await memberTypeService.UpdateAsync(memberType);
+            TempData["SuccessMessage"] = "Cập nhật loại độc giả thành công.";
+            return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
@@ -100,8 +97,7 @@ public class MemberTypeController(MemberTypeService memberTypeService) : Control
     {
         try
         {
-            var memberType = await memberTypeService.GetAsync(id);
-            return View(memberType);
+            return View(await memberTypeService.GetAsync(id));
         }
         catch (Exception ex)
         {
@@ -116,12 +112,8 @@ public class MemberTypeController(MemberTypeService memberTypeService) : Control
     {
         try
         {
-            var result = await memberTypeService.DeleteAsync(id);
-
-            if (result)
-                TempData["SuccessMessage"] = "Xóa loại độc giả thành công!";
-            else
-                TempData["ErrorMessage"] = "Không thể xóa loại độc giả.";
+            await memberTypeService.DeleteAsync(id);
+            TempData["SuccessMessage"] = "Xóa loại độc giả thành công.";
         }
         catch (Exception ex)
         {

@@ -1,4 +1,70 @@
 @model Location
 @{ ViewData["Title"] = "Cập nhật vị trí"; }
-<div class="app-content"><div class="container-fluid"><div class="col-xl-8 col-lg-10"><form asp-action="EditLocation" asp-route-id="@Model.LocationId" method="post">@Html.AntiForgeryToken()<input type="hidden" asp-for="LocationId" /><div class="card"><div class="card-body"><div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div><div class="row"><div class="col-md-6 mb-3"><label asp-for="LocationCode" class="form-label">Mã vị trí</label><input asp-for="LocationCode" class="form-control" /><span asp-validation-for="LocationCode" class="text-danger"></span></div><div class="col-md-6 mb-3"><label asp-for="LocationName" class="form-label">Tên vị trí</label><input asp-for="LocationName" class="form-control" /><span asp-validation-for="LocationName" class="text-danger"></span></div><div class="col-md-4 mb-3"><label asp-for="Floor" class="form-label">Tầng</label><input asp-for="Floor" class="form-control" /></div><div class="col-md-4 mb-3"><label asp-for="Room" class="form-label">Phòng</label><input asp-for="Room" class="form-control" /></div><div class="col-md-4 mb-3"><label asp-for="Shelf" class="form-label">Kệ</label><input asp-for="Shelf" class="form-control" /></div></div><div class="mb-3"><label asp-for="Description" class="form-label">Mô tả</label><textarea asp-for="Description" class="form-control" rows="4"></textarea></div><div class="form-check"><input asp-for="IsActive" class="form-check-input" /><label asp-for="IsActive" class="form-check-label">Đang hoạt động</label></div></div><div class="card-footer d-flex gap-2"><button type="submit" class="btn btn-dark"><i class="bi bi-check-lg me-1"></i>Lưu thay đổi</button><a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a></div></div></form></div></div></div>
-@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <ol class="breadcrumb float-sm-end mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Vị trí</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Cập nhật vị trí</li>
+        </ol>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+        <div class="col-xl-8 col-lg-10">
+            <form asp-action="EditLocation" asp-route-id="@Model.LocationId" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="LocationId" />
+                <div class="card">
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="LocationCode" class="form-label">Mã vị trí</label>
+                                <input asp-for="LocationCode" class="form-control" />
+                                <span asp-validation-for="LocationCode" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="LocationName" class="form-label">Tên vị trí</label>
+                                <input asp-for="LocationName" class="form-control" />
+                                <span asp-validation-for="LocationName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Floor" class="form-label">Tầng</label>
+                                <input asp-for="Floor" class="form-control" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Room" class="form-label">Phòng</label>
+                                <input asp-for="Room" class="form-control" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Shelf" class="form-label">Kệ</label>
+                                <input asp-for="Shelf" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Mô tả</label>
+                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                        </div>
+                        <div class="form-check">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label">Đang hoạt động</label>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex flex-wrap gap-2">
+                        <button type="submit" class="btn btn-dark"><i class="bi bi-check-lg me-1"></i>Lưu thay đổi</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Quay lại</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

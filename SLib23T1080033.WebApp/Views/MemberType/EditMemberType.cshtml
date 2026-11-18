@@ -1,4 +1,59 @@
 @model MemberType
 @{ ViewData["Title"] = "Sửa loại độc giả"; }
-<div class="app-content"><div class="container-fluid"><div class="col-xl-8 col-lg-10"><form asp-action="EditMemberType" asp-route-id="@Model.MemberTypeId" method="post">@Html.AntiForgeryToken()<input type="hidden" asp-for="MemberTypeId" /><div class="card"><div class="card-body"><div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div><div class="mb-3"><label asp-for="TypeName" class="form-label">Tên loại độc giả</label><input asp-for="TypeName" class="form-control" /><span asp-validation-for="TypeName" class="text-danger"></span></div><div class="row"><div class="col-md-4 mb-3"><label asp-for="MaxActiveLoans" class="form-label">Số sách mượn tối đa</label><input asp-for="MaxActiveLoans" type="number" min="0" class="form-control" /></div><div class="col-md-4 mb-3"><label asp-for="LoanPeriodDays" class="form-label">Thời hạn mượn</label><input asp-for="LoanPeriodDays" type="number" min="1" class="form-control" /></div><div class="col-md-4 mb-3"><label asp-for="MaxRenewals" class="form-label">Số lần gia hạn</label><input asp-for="MaxRenewals" type="number" min="0" class="form-control" /></div></div><div class="form-check"><input asp-for="IsActive" class="form-check-input" /><label asp-for="IsActive" class="form-check-label">Đang hoạt động</label></div></div><div class="card-footer d-flex gap-2"><button type="submit" class="btn btn-dark"><i class="bi bi-check-lg me-1"></i>Lưu thay đổi</button><a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a></div></div></form></div></div></div>
-@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <ol class="breadcrumb float-sm-end mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Loại độc giả</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Sửa loại độc giả</li>
+        </ol>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+        <div class="col-xl-8 col-lg-10">
+            <form asp-action="EditMemberType" asp-route-id="@Model.MemberTypeId" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="MemberTypeId" />
+                <div class="card">
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div class="mb-3">
+                            <label asp-for="TypeName" class="form-label">Tên loại độc giả</label>
+                            <input asp-for="TypeName" class="form-control" />
+                            <span asp-validation-for="TypeName" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="MaxActiveLoans" class="form-label">Số sách mượn tối đa</label>
+                                <input asp-for="MaxActiveLoans" type="number" min="0" class="form-control" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="LoanPeriodDays" class="form-label">Thời hạn mượn</label>
+                                <input asp-for="LoanPeriodDays" type="number" min="1" class="form-control" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="MaxRenewals" class="form-label">Số lần gia hạn</label>
+                                <input asp-for="MaxRenewals" type="number" min="0" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label">Đang hoạt động</label>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex flex-wrap gap-2">
+                        <button type="submit" class="btn btn-dark"><i class="bi bi-check-lg me-1"></i>Lưu thay đổi</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Quay lại</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
