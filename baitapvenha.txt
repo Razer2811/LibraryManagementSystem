@@ -1,0 +1,4 @@
+làm bắt lỗi trong service về kiểm tra dữ liệu đầu vào dùng asp 
+thực sự làm trong service
+
+Về nhà hiểu được từng hàm thêm và sửa cho các Controller (đặt biệt là kiểm tra dữ liệu)
