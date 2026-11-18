@@ -5,13 +5,20 @@ using SLib23T1080033.Models.Entities;
 
 namespace SLib23T1080033.WebApp.Controllers;
 
-public class LanguageController(LanguageService _languageService)
+public class LanguageController(LanguageService languageService)
     : Controller
 {
-    // Hiển thị danh sách
-    public async Task<IActionResult> Index()
+    [HttpGet]
+    public async Task<IActionResult> Index(string? keyword)
     {
-        var languages = await _languageService.ListAsync();
+        var languages = await languageService.ListAsync();
+        if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            languages = languages.Where(l =>
+                l.LanguageName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                l.LanguageCode.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+        }
+        ViewBag.Keyword = keyword?.Trim();
         return View(languages);
     }
 
@@ -32,7 +39,7 @@ public class LanguageController(LanguageService _languageService)
 
         try
         {
-            await _languageService.AddAsync(language);
+            await languageService.AddAsync(language);
 
             TempData["SuccessMessage"] = "Thêm ngôn ngữ thành công!";
 
@@ -51,7 +58,7 @@ public class LanguageController(LanguageService _languageService)
     {
         try
         {
-            var language = await _languageService.GetAsync(id);
+            var language = await languageService.GetAsync(id);
             return View(language);
         }
         catch (Exception ex)
@@ -75,7 +82,7 @@ public class LanguageController(LanguageService _languageService)
 
         try
         {
-            var result = await _languageService.UpdateAsync(language);
+            var result = await languageService.UpdateAsync(language);
 
             if (result)
             {
@@ -103,7 +110,7 @@ public class LanguageController(LanguageService _languageService)
     {
         try
         {
-            var language = await _languageService.GetAsync(id);
+            var language = await languageService.GetAsync(id);
             return View(language);
         }
         catch (Exception ex)
@@ -120,7 +127,7 @@ public class LanguageController(LanguageService _languageService)
     {
         try
         {
-            var result = await _languageService.DeleteAsync(id);
+            var result = await languageService.DeleteAsync(id);
 
             if (result)
                 TempData["SuccessMessage"] = "Xóa ngôn ngữ thành công!";

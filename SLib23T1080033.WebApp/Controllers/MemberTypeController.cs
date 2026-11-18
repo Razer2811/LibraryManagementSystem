@@ -5,11 +5,18 @@ using SLib23T1080033.Models.Entities;
 
 namespace SLib23T1080033.WebApp.Controllers;
 
-public class MemberTypeController(MemberTypeService _service) : Controller
+public class MemberTypeController(MemberTypeService memberTypeService) : Controller
 {
-    public async Task<IActionResult> Index()
+    [HttpGet]
+    public async Task<IActionResult> Index(string? keyword)
     {
-        var memberTypes = await _service.ListAsync();
+        var memberTypes = await memberTypeService.ListAsync();
+        if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            memberTypes = memberTypes.Where(m =>
+                m.TypeName.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+        }
+        ViewBag.Keyword = keyword?.Trim();
         return View(memberTypes);
     }
 
@@ -28,7 +35,7 @@ public class MemberTypeController(MemberTypeService _service) : Controller
 
         try
         {
-            await _service.AddAsync(memberType);
+            await memberTypeService.AddAsync(memberType);
 
             TempData["SuccessMessage"] = "Thêm loại độc giả thành công!";
             return RedirectToAction(nameof(Index));
@@ -45,7 +52,7 @@ public class MemberTypeController(MemberTypeService _service) : Controller
     {
         try
         {
-            var memberType = await _service.GetAsync(id);
+            var memberType = await memberTypeService.GetAsync(id);
             return View(memberType);
         }
         catch (Exception ex)
@@ -68,7 +75,7 @@ public class MemberTypeController(MemberTypeService _service) : Controller
 
         try
         {
-            var result = await _service.UpdateAsync(memberType);
+            var result = await memberTypeService.UpdateAsync(memberType);
 
             if (result)
             {
@@ -93,7 +100,7 @@ public class MemberTypeController(MemberTypeService _service) : Controller
     {
         try
         {
-            var memberType = await _service.GetAsync(id);
+            var memberType = await memberTypeService.GetAsync(id);
             return View(memberType);
         }
         catch (Exception ex)
@@ -109,7 +116,7 @@ public class MemberTypeController(MemberTypeService _service) : Controller
     {
         try
         {
-            var result = await _service.DeleteAsync(id);
+            var result = await memberTypeService.DeleteAsync(id);
 
             if (result)
                 TempData["SuccessMessage"] = "Xóa loại độc giả thành công!";

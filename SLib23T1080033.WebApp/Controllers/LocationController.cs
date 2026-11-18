@@ -5,11 +5,20 @@ using SLib23T1080033.Models.Entities;
 
 namespace SLib23T1080033.WebApp.Controllers;
 
-public class LocationController(LocationService _service) : Controller
+public class LocationController(LocationService locationService) : Controller
 {
-    public async Task<IActionResult> Index()
+    [HttpGet]
+    public async Task<IActionResult> Index(string? keyword)
     {
-        var locations = await _service.ListAsync();
+        var locations = await locationService.ListAsync();
+        if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            locations = locations.Where(l =>
+                l.LocationCode.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                l.LocationName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                (l.Room?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false));
+        }
+        ViewBag.Keyword = keyword?.Trim();
         return View(locations);
     }
 
@@ -28,7 +37,7 @@ public class LocationController(LocationService _service) : Controller
 
         try
         {
-            await _service.AddAsync(location);
+            await locationService.AddAsync(location);
 
             TempData["SuccessMessage"] = "Thêm vị trí thành công!";
             return RedirectToAction(nameof(Index));
@@ -45,7 +54,7 @@ public class LocationController(LocationService _service) : Controller
     {
         try
         {
-            var location = await _service.GetAsync(id);
+            var location = await locationService.GetAsync(id);
             return View(location);
         }
         catch (Exception ex)
@@ -68,7 +77,7 @@ public class LocationController(LocationService _service) : Controller
 
         try
         {
-            var result = await _service.UpdateAsync(location);
+            var result = await locationService.UpdateAsync(location);
 
             if (result)
             {
@@ -93,7 +102,7 @@ public class LocationController(LocationService _service) : Controller
     {
         try
         {
-            var location = await _service.GetAsync(id);
+            var location = await locationService.GetAsync(id);
             return View(location);
         }
         catch (Exception ex)
@@ -109,7 +118,7 @@ public class LocationController(LocationService _service) : Controller
     {
         try
         {
-            var result = await _service.DeleteAsync(id);
+            var result = await locationService.DeleteAsync(id);
 
             if (result)
                 TempData["SuccessMessage"] = "Xóa vị trí thành công!";

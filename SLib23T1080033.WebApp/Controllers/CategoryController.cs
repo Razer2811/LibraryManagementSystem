@@ -4,20 +4,27 @@ using SLib23T1080033.Models.Entities;
 
 namespace SLib23T1080033.WebApp.Controllers;
 
-public class CategoryController(CategoryService _categoryService)
+public class CategoryController(CategoryService categoryService)
     : Controller
 {
-    // Hiển thị danh sách danh mục
-    public async Task<IActionResult> Index()
+    [HttpGet]
+    public async Task<IActionResult> Index(string? keyword)
     {
-        var categories = await _categoryService.ListAsync();
+        var categories = await categoryService.ListAsync();
+        if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            categories = categories.Where(c =>
+                c.CategoryName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                (c.Description?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false));
+        }
+        ViewBag.Keyword = keyword?.Trim();
         return View(categories);
     }
 
     // Chuẩn bị danh sách danh mục cha cho form
     private async Task LoadParentCategoriesAsync(int? currentCategoryId = null)
     {
-        var categories = await _categoryService.ListAsync();
+        var categories = await categoryService.ListAsync();
 
         ViewBag.ParentCategories = categories
             .Where(c => c.CategoryId != currentCategoryId)
@@ -45,7 +52,7 @@ public class CategoryController(CategoryService _categoryService)
 
         try
         {
-            await _categoryService.AddAsync(category);
+            await categoryService.AddAsync(category);
 
             TempData["SuccessMessage"] = "Thêm danh mục thành công!";
 
@@ -65,7 +72,7 @@ public class CategoryController(CategoryService _categoryService)
     {
         try
         {
-            var category = await _categoryService.GetAsync(id);
+            var category = await categoryService.GetAsync(id);
 
             await LoadParentCategoriesAsync(category.CategoryId);
 
@@ -94,7 +101,7 @@ public class CategoryController(CategoryService _categoryService)
 
         try
         {
-            var result = await _categoryService.UpdateAsync(category);
+            var result = await categoryService.UpdateAsync(category);
 
             if (result)
             {
@@ -122,7 +129,7 @@ public class CategoryController(CategoryService _categoryService)
     {
         try
         {
-            var category = await _categoryService.GetAsync(id);
+            var category = await categoryService.GetAsync(id);
             return View(category);
         }
         catch (Exception ex)
@@ -139,7 +146,7 @@ public class CategoryController(CategoryService _categoryService)
     {
         try
         {
-            var result = await _categoryService.DeleteAsync(id);
+            var result = await categoryService.DeleteAsync(id);
 
             if (result)
                 TempData["SuccessMessage"] = "Xóa danh mục thành công!";

@@ -25,8 +25,8 @@
         <div class="row">
             <div class="col-xl-8 col-lg-10">
 
-                <form method="post" action="/Author/SaveData">
-                    <input type="hidden" asp-route-id="@Model.AuthorId"/>
+                <form asp-action="EditAuthor" asp-route-id="@Model.AuthorId" method="post">
+                    @Html.AntiForgeryToken()
                     <div class="card">
                         <div class="card-body">
 

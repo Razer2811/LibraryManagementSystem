@@ -22,15 +22,32 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        }
+
         <div class="card">
 
             <!-- Hàng trên cùng: tìm kiếm + nút thêm -->
             <div class="card-header">
                 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
 
-                    <form method="get" action="/Author" class="flex-grow-1" style="max-width: 420px;">
+                    <form method="get" asp-action="Index" class="flex-grow-1" style="max-width: 420px;">
                         <div class="input-group">
                             <input type="search" name="keyword" class="form-control"
+                                   value="@ViewBag.Keyword"
                                    placeholder="Tìm theo tên tác giả"
                                    aria-label="Từ khóa tìm kiếm" />
                             <button type="submit" class="btn btn-outline-secondary">
@@ -39,7 +56,7 @@
                         </div>
                     </form>
 
-                    <a href="/Author/CreateAuthor" class="btn btn-dark">
+                    <a asp-action="CreateAuthor" class="btn btn-dark">
                         <i class="bi bi-plus-lg me-1"></i>Thêm tác giả
                     </a>
                 </div>

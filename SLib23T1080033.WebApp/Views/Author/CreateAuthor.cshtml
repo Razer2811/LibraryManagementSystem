@@ -25,7 +25,8 @@
         <div class="row">
             <div class="col-xl-8 col-lg-10">
 
-                <form asp-action="EditAuthor" asp-route-id="@Model.AuthorId" method="post">
+                <form asp-action="CreateAuthor" method="post">
+                    @Html.AntiForgeryToken()
 
                     <div class="card">
                         <div class="card-body">

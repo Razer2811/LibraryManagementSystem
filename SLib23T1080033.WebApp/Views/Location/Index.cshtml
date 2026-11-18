@@ -1,86 +1,15 @@
-﻿@model IEnumerable<SLib23T1080033.Models.Entities.Location>
+@model IEnumerable<Location>
+@{ ViewBag.Title = "Quản lý vị trí"; }
 
-@{
-    ViewBag.Title = "Nơi lưu trữ sách";
-}
-
-
-<div class="catalogue-index">
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
-
-<p>
-    <span class="catalogue-search">
-        <i class="bi bi-search" aria-hidden="true"></i>
-        <input type="search" class="form-control" data-table-search="#location-table"
-               placeholder="Tìm vị trí, mã kệ..." aria-label="Tìm kiếm vị trí" />
-    </span>
-    <a asp-action="CreateLocation" class="btn btn-primary">
-        Thêm vị trí
-    </a>
-</p>
-
-<table id="location-table" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Mã ID</th>
-            <th>Mã vị trí</th>
-            <th>Tên vị trí</th>
-            <th>Tầng</th>
-            <th>Phòng</th>
-            <th>Kệ</th>
-            <th>Mô tả</th>
-            <th>Trạng thái</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.LocationId</td>
-                <td>@item.LocationCode</td>
-                <td>@item.LocationName</td>
-                <td>@item.Floor</td>
-                <td>@item.Room</td>
-                <td>@item.Shelf</td>
-                <td>@item.Description</td>
-                <td>
-                    @if (item.IsActive)
-                    {
-                            <span class="badge bg-success">Đang hoạt động</span>
-                    }
-                    else
-                    {
-                            <span class="badge bg-secondary">Ngừng hoạt động</span>
-                    }
-                </td>
-                <td>
-                    <a asp-action="EditLocation"
-                       asp-route-id="@item.LocationId"
-                       class="btn btn-warning btn-sm">
-                        Sửa
-                    </a>
-
-                    <a asp-action="DeleteLocation"
-                       asp-route-id="@item.LocationId"
-                       class="btn btn-danger btn-sm">
-                        Xóa
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-</div>
+<div class="app-content"><div class="container-fluid">
+    @if (TempData["SuccessMessage"] != null) { <div class="alert alert-success alert-dismissible fade show">@TempData["SuccessMessage"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div> }
+    @if (TempData["ErrorMessage"] != null) { <div class="alert alert-danger alert-dismissible fade show">@TempData["ErrorMessage"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div> }
+    <div class="card"><div class="card-header"><div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <form method="get" asp-action="Index" class="flex-grow-1" style="max-width:420px"><div class="input-group"><input type="search" name="keyword" value="@ViewBag.Keyword" class="form-control" placeholder="Tìm mã, tên hoặc phòng" /><button class="btn btn-outline-secondary"><i class="bi bi-search"></i></button></div></form>
+        <a asp-action="CreateLocation" class="btn btn-dark"><i class="bi bi-plus-lg me-1"></i>Thêm vị trí</a>
+    </div></div><div class="card-body p-0 table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Mã vị trí</th><th>Tên vị trí</th><th>Tầng</th><th>Phòng</th><th>Kệ</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead><tbody>
+    @foreach (var item in Model) {
+        <tr><td class="fw-medium">@item.LocationCode</td><td>@item.LocationName</td><td>@(item.Floor ?? "—")</td><td>@(item.Room ?? "—")</td><td>@(item.Shelf ?? "—")</td><td>@if(item.IsActive){<span class="badge bg-success-subtle text-success-emphasis">Hoạt động</span>}else{<span class="badge bg-secondary-subtle text-secondary-emphasis">Ngừng hoạt động</span>}</td><td class="text-end text-nowrap"><a asp-action="EditLocation" asp-route-id="@item.LocationId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a> <a asp-action="DeleteLocation" asp-route-id="@item.LocationId" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a></td></tr>
+    }
+    </tbody></table></div></div>
+</div></div>

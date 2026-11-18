@@ -1,34 +1,3 @@
-﻿@model SLib23T1080033.Models.Entities.Category
-
-@{
-    ViewBag.Title = "Xóa danh mục";
-}
-
-<div class="crud-page">
-<div class="alert alert-warning">
-    Bạn có chắc chắn muốn xóa danh mục này không?
-</div>
-
-<dl class="row">
-    <dt class="col-sm-3">Mã danh mục</dt>
-    <dd class="col-sm-9">@Model.CategoryId</dd>
-
-    <dt class="col-sm-3">Tên danh mục</dt>
-    <dd class="col-sm-9">@Model.CategoryName</dd>
-
-    <dt class="col-sm-3">Mã danh mục cha</dt>
-    <dd class="col-sm-9">
-        @(Model.ParentCategoryId?.ToString() ?? "Không có")
-    </dd>
-</dl>
-
-<form asp-action="DeleteCategoryConfirmed"
-      asp-route-id="@Model.CategoryId"
-      method="post">
-
-    <input type="hidden" asp-for="CategoryId" />
-
-    <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
-    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
-</form>
-</div>
+@model Category
+@{ ViewData["Title"] = "Xóa danh mục"; }
+<div class="app-content"><div class="container-fluid"><div class="col-xl-8 col-lg-10"><div class="card border-danger"><div class="card-header bg-danger text-white"><h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Xác nhận xóa danh mục</h5></div><div class="card-body"><div class="alert alert-warning">Bạn có chắc chắn muốn xóa danh mục này không?</div><dl class="row mb-0"><dt class="col-sm-3">Tên danh mục</dt><dd class="col-sm-9 fw-medium">@Model.CategoryName</dd><dt class="col-sm-3">Mô tả</dt><dd class="col-sm-9">@(Model.Description ?? "—")</dd></dl></div><div class="card-footer d-flex gap-2"><form asp-action="DeleteCategoryConfirmed" asp-route-id="@Model.CategoryId" method="post">@Html.AntiForgeryToken()<button type="submit" class="btn btn-danger">Xác nhận xóa</button></form><a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a></div></div></div></div></div>

@@ -1,105 +1,18 @@
-﻿@model IEnumerable<SLib23T1080033.Models.Entities.Publisher>
+@model IEnumerable<Publisher>
+@{ ViewBag.Title = "Quản lý nhà xuất bản"; }
 
-@{
-    ViewBag.Title = "Quản lý nhà xuất bản";
-}
-
-<div class="catalogue-index container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="catalogue-search">
-            <i class="bi bi-search" aria-hidden="true"></i>
-            <input type="search" class="form-control" data-table-search="#publisher-table"
-                   placeholder="Tìm nhà xuất bản, email..." aria-label="Tìm kiếm nhà xuất bản" />
-        </div>
-        <a asp-action="CreatePublisher" class="btn btn-primary">
-            + Thêm nhà xuất bản
-        </a>
+<div class="app-content"><div class="container-fluid">
+    @if (TempData["SuccessMessage"] != null) { <div class="alert alert-success alert-dismissible fade show">@TempData["SuccessMessage"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div> }
+    @if (TempData["ErrorMessage"] != null) { <div class="alert alert-danger alert-dismissible fade show">@TempData["ErrorMessage"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div> }
+    <div class="card">
+        <div class="card-header"><div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <form method="get" asp-action="Index" class="flex-grow-1" style="max-width:420px"><div class="input-group"><input type="search" name="keyword" value="@ViewBag.Keyword" class="form-control" placeholder="Tìm nhà xuất bản, địa chỉ hoặc email" /><button class="btn btn-outline-secondary"><i class="bi bi-search"></i></button></div></form>
+            <a asp-action="CreatePublisher" class="btn btn-dark"><i class="bi bi-plus-lg me-1"></i>Thêm nhà xuất bản</a>
+        </div></div>
+        <div class="card-body p-0 table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Tên nhà xuất bản</th><th>Địa chỉ</th><th>Điện thoại</th><th>Email</th><th>Website</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead><tbody>
+        @foreach (var item in Model) {
+            <tr><td class="fw-medium">@item.PublisherName</td><td>@(item.Address ?? "—")</td><td>@(item.Phone ?? "—")</td><td>@(item.Email ?? "—")</td><td>@(item.Website ?? "—")</td><td>@if(item.IsActive){<span class="badge bg-success-subtle text-success-emphasis">Hoạt động</span>}else{<span class="badge bg-secondary-subtle text-secondary-emphasis">Ngừng hoạt động</span>}</td><td class="text-end text-nowrap"><a asp-action="EditPublisher" asp-route-id="@item.PublisherId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a> <a asp-action="DeletePublisher" asp-route-id="@item.PublisherId" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a></td></tr>
+        }
+        </tbody></table></div>
     </div>
-
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["SuccessMessage"]
-        </div>
-    }
-
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["ErrorMessage"]
-        </div>
-    }
-
-    <div class="card shadow-sm">
-        <div class="card-body table-responsive">
-            <table id="publisher-table" class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Mã</th>
-                        <th>Tên nhà xuất bản</th>
-                        <th>Địa chỉ</th>
-                        <th>Điện thoại</th>
-                        <th>Email</th>
-                        <th>Website</th>
-                        <th>Trạng thái</th>
-                        <th>Thao tác</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @if (Model != null && Model.Any())
-                    {
-                        foreach (var publisher in Model)
-                        {
-                            <tr>
-                                <td>@publisher.PublisherId</td>
-                                <td>@publisher.PublisherName</td>
-                                <td>@(publisher.Address ?? "—")</td>
-                                <td>@(publisher.Phone ?? "—")</td>
-                                <td>@(publisher.Email ?? "—")</td>
-                                <td>@(publisher.Website ?? "—")</td>
-
-                                <td>
-                                    @if (publisher.IsActive)
-                                    {
-                                        <span class="badge bg-success">
-                                            Hoạt động
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-secondary">
-                                            Ngừng hoạt động
-                                        </span>
-                                    }
-                                </td>
-
-                                <td>
-                                    <a asp-action="EditPublisher"
-                                       asp-route-id="@publisher.PublisherId"
-                                       class="btn btn-warning btn-sm">
-                                        Sửa
-                                    </a>
-
-                                    <a asp-action="DeletePublisher"
-                                       asp-route-id="@publisher.PublisherId"
-                                       class="btn btn-danger btn-sm">
-                                        Xóa
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="8" class="text-center py-4">
-                                Chưa có dữ liệu nhà xuất bản.
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+</div></div>

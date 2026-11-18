@@ -1,38 +1,4 @@
-﻿@model SLib23T1080033.Models.Entities.Category
-
-@{
-    ViewBag.Title = "Sửa danh mục";
-}
-
-<div class="crud-page">
-<form asp-action="EditCategory" asp-route-id="@Model.CategoryId" method="post">
-    <input type="hidden" asp-for="CategoryId" />
-
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-    <div class="mb-3">
-        <label asp-for="CategoryName" class="form-label">Tên danh mục</label>
-        <input asp-for="CategoryName" class="form-control" />
-        <span asp-validation-for="CategoryName" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="ParentCategoryId" class="form-label">Danh mục cha</label>
-        <select asp-for="ParentCategoryId"
-                asp-items="ViewBag.ParentCategories"
-                class="form-select">
-            <option value="">-- Không có danh mục cha --</option>
-        </select>
-        <span asp-validation-for="ParentCategoryId" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-</form>
-</div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+@model Category
+@{ ViewData["Title"] = "Sửa danh mục"; }
+<div class="app-content"><div class="container-fluid"><div class="col-xl-8 col-lg-10"><form asp-action="EditCategory" asp-route-id="@Model.CategoryId" method="post">@Html.AntiForgeryToken()<input type="hidden" asp-for="CategoryId" /><div class="card"><div class="card-body"><div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div><div class="mb-3"><label asp-for="CategoryName" class="form-label">Tên danh mục</label><input asp-for="CategoryName" class="form-control" /><span asp-validation-for="CategoryName" class="text-danger"></span></div><div class="mb-3"><label asp-for="ParentCategoryId" class="form-label">Danh mục cha</label><select asp-for="ParentCategoryId" asp-items="ViewBag.ParentCategories" class="form-select"><option value="">-- Không có danh mục cha --</option></select></div><div class="mb-3"><label asp-for="Description" class="form-label">Mô tả</label><textarea asp-for="Description" class="form-control" rows="4"></textarea></div><div class="form-check"><input asp-for="IsActive" class="form-check-input" /><label asp-for="IsActive" class="form-check-label">Đang hoạt động</label></div></div><div class="card-footer d-flex gap-2"><button type="submit" class="btn btn-dark"><i class="bi bi-check-lg me-1"></i>Lưu thay đổi</button><a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a></div></div></form></div></div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

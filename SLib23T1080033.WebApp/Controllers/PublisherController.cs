@@ -4,13 +4,21 @@ using SLib23T1080033.Models.Entities;
 
 namespace SLib23T1080033.WebApp.Controllers
 {
-    public class PublisherController(PublisherService _publisherService)
+    public class PublisherController(PublisherService publisherService)
         : Controller
     {
-        // GET: Hiển thị danh sách nhà xuất bản
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(string? keyword)
         {
-            var publishers = await _publisherService.ListAsync();
+            var publishers = await publisherService.ListAsync();
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                publishers = publishers.Where(p =>
+                    p.PublisherName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                    (p.Address?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (p.Email?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false));
+            }
+            ViewBag.Keyword = keyword?.Trim();
             return View(publishers);
         }
 
@@ -33,7 +41,7 @@ namespace SLib23T1080033.WebApp.Controllers
 
             try
             {
-                await _publisherService.AddAsync(publisher);
+                await publisherService.AddAsync(publisher);
 
                 TempData["SuccessMessage"] =
                     "Thêm nhà xuất bản thành công!";
@@ -53,7 +61,7 @@ namespace SLib23T1080033.WebApp.Controllers
         {
             try
             {
-                var publisher = await _publisherService.GetAsync(id);
+                var publisher = await publisherService.GetAsync(id);
                 return View(publisher);
             }
             catch (Exception ex)
@@ -81,7 +89,7 @@ namespace SLib23T1080033.WebApp.Controllers
 
             try
             {
-                var result = await _publisherService.UpdateAsync(publisher);
+                var result = await publisherService.UpdateAsync(publisher);
 
                 if (result)
                 {
@@ -109,7 +117,7 @@ namespace SLib23T1080033.WebApp.Controllers
         {
             try
             {
-                var publisher = await _publisherService.GetAsync(id);
+                var publisher = await publisherService.GetAsync(id);
                 return View(publisher);
             }
             catch (Exception ex)
@@ -126,7 +134,7 @@ namespace SLib23T1080033.WebApp.Controllers
         {
             try
             {
-                var result = await _publisherService.DeleteAsync(id);
+                var result = await publisherService.DeleteAsync(id);
 
                 if (result)
                 {
