@@ -11,3 +11,5 @@ thông tin MemberTypeName. Lớp MemberDto kế thừa Entities Member.
 	+ Phân trang hiển thị
 	+ Bổ sung, cập nhật(không được thay đổi trạng thái, không được thay đổi thời gian hết hạn thẻ), khóa/mở khóa cho 
 	độc giả (cập nhật trạng thái). Xóa, gia hạn thẻ
+
+Chức năng quản lý nhân viên
