@@ -41,11 +41,13 @@ namespace SLib23T1080033.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAuthor(Author author)
         {
-            if (!ModelState.IsValid)
-                return View(author);
-
             try
             {
+                AuthorService.ValidateAuthor(author);
+
+                if (!ModelState.IsValid)
+                    return View(author);
+
                 await authorService.AddAsync(author);
                 TempData["SuccessMessage"] = "Thêm tác giả thành công.";
                 return RedirectToAction(nameof(Index));
@@ -56,6 +58,7 @@ namespace SLib23T1080033.WebApp.Controllers
                 return View(author);
             }
         }
+
 
         [HttpGet]
         public async Task<IActionResult> EditAuthor(int id)
@@ -79,12 +82,21 @@ namespace SLib23T1080033.WebApp.Controllers
             if (id != author.AuthorId)
                 return BadRequest();
 
-            if (!ModelState.IsValid)
-                return View(author);
-
             try
             {
-                await authorService.UpdateAsync(author);
+                AuthorService.ValidateAuthor(author);
+
+                if (!ModelState.IsValid)
+                    return View(author);
+
+                var updated = await authorService.UpdateAsync(author);
+
+                if (!updated)
+                {
+                    ModelState.AddModelError(string.Empty, "Không thể cập nhật tác giả.");
+                    return View(author);
+                }
+
                 TempData["SuccessMessage"] = "Cập nhật tác giả thành công.";
                 return RedirectToAction(nameof(Index));
             }

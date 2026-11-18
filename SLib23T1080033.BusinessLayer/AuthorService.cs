@@ -98,7 +98,7 @@ public class AuthorService
     }
 
     // Kiểm tra dữ liệu tác giả
-    private static void ValidateAuthor(Author author)
+    public static void ValidateAuthor(Author author)
     {
         if (author == null)
             throw new Exception("Thông tin tác giả không được để trống.");
