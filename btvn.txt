@@ -13,3 +13,6 @@ thông tin MemberTypeName. Lớp MemberDto kế thừa Entities Member.
 	độc giả (cập nhật trạng thái). Xóa, gia hạn thẻ
 
 Chức năng quản lý nhân viên
+
+Về nhà cần làm và chỉnh sửa lại về mặt code backend cũng như là làm việc bắt lỗi dữ liệu trong service hoặc làm trong 
+file controller (có 2 cách, cách nào cũng được)
