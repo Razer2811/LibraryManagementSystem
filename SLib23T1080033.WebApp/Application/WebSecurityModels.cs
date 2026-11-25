@@ -12,7 +12,6 @@ public class WebUserData
     public string? UserName { get; set; }
     public string? DisplayName { get; set; }
     public string? Email { get; set; }
-    public string? Photo { get; set; }
     public List<string>? Roles { get; set; }
 
     /// <summary>
@@ -29,7 +28,6 @@ public class WebUserData
                 new Claim(nameof(UserName), UserName ?? ""),
                 new Claim(nameof(DisplayName), DisplayName ?? ""),
                 new Claim(nameof(Email), Email ?? ""),
-                new Claim(nameof(Photo), Photo ?? "")
             };
             if (Roles != null)
                 foreach (var role in Roles)
@@ -88,7 +86,6 @@ public static class WebUserExtensions
             userData.UserName = principal.FindFirstValue(nameof(userData.UserName));
             userData.DisplayName = principal.FindFirstValue(nameof(userData.DisplayName));
             userData.Email = principal.FindFirstValue(nameof(userData.Email));
-            userData.Photo = principal.FindFirstValue(nameof(userData.Photo));
 
             userData.Roles = new List<string>();
             foreach (var claim in principal.FindAll(ClaimTypes.Role))

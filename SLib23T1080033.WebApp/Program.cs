@@ -1,12 +1,29 @@
 ﻿using SLib23T1080033.BusinessLayer;
 using SLib23T1080033.DataLayer.Interfaces;
 using SLib23T1080033.DataLayer.SQLServer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllersWithViews();
+
+// Cấu hình xác thực và phân quyền
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.SlidingExpiration = true;
+    });
+
+builder.Services.AddAuthorization();
+
+
+
 // Đăng ký DbHelper
 builder.Services.AddScoped<DbHelper>();
 
@@ -67,6 +84,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
+
+// Authentication phải đứng trước Authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
