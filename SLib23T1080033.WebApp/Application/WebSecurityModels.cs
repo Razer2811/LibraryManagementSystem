@@ -12,6 +12,9 @@ public class WebUserData
     public string? UserName { get; set; }
     public string? DisplayName { get; set; }
     public string? Email { get; set; }
+    public string? IP { get; set; }
+    public string? SessionId { get; set; }
+
     public List<string>? Roles { get; set; }
 
     /// <summary>
