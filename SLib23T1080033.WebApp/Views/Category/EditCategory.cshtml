@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Sửa danh mục";
+    ViewBag.Description = "Cập nhật thông tin của danh mục đã chọn.";
 }
 
 <div class="app-content-header">
@@ -16,6 +17,7 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         <div class="col-xl-8 col-lg-10">
             <form asp-action="EditCategory" asp-route-id="@Model.CategoryId" method="post">
                 @Html.AntiForgeryToken()

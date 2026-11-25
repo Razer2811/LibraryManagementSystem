@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Xóa tác giả";
+    ViewBag.Description = "Kiểm tra hồ sơ trước khi xác nhận xóa tác giả.";
 }
 
 <!-- Tiêu đề + breadcrumb -->
@@ -21,6 +22,7 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         <div class="row">
             <div class="col-xl-8 col-lg-10">
 

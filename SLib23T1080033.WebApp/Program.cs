@@ -43,6 +43,10 @@ builder.Services.AddScoped<LocationService>();
 builder.Services.AddScoped<IMemberTypeRepository, MemberTypeRepository>();
 // Đăng ký Service xử lý nghiệp vụ loại thành viên
 builder.Services.AddScoped<MemberTypeService>();
+// Đăng ký Repository xử lý dữ liệu độc giả
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+// Đăng ký Service xử lý nghiệp vụ độc giả
+builder.Services.AddScoped<MemberService>();
 var app = builder.Build();
 
 

@@ -1,5 +1,8 @@
 @model MemberType
-@{ ViewData["Title"] = "Sửa loại độc giả"; }
+@{
+    ViewData["Title"] = "Sửa loại độc giả";
+    ViewBag.Description = "Cập nhật thông tin và quy định mượn của loại độc giả.";
+}
 
 <div class="app-content-header">
     <div class="container-fluid">
@@ -13,6 +16,7 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         <div class="col-xl-8 col-lg-10">
             <form asp-action="EditMemberType" asp-route-id="@Model.MemberTypeId" method="post">
                 @Html.AntiForgeryToken()

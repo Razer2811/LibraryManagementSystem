@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Quản lý tác giả";
+    ViewBag.Description = "Tra cứu và quản lý thông tin tác giả của các đầu sách.";
 }
 
 <!-- Views/Author/Index.cshtml : phần nội dung nằm trong layout AdminLTE -->
@@ -22,6 +23,7 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         @if (TempData["SuccessMessage"] != null)
         {
             <div class="alert alert-success alert-dismissible fade show" role="alert">

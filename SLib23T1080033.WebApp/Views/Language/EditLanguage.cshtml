@@ -1,5 +1,8 @@
 @model Language
-@{ ViewData["Title"] = "Sửa ngôn ngữ"; }
+@{
+    ViewData["Title"] = "Sửa ngôn ngữ";
+    ViewBag.Description = "Cập nhật thông tin ngôn ngữ đã chọn.";
+}
 
 <div class="app-content-header">
     <div class="container-fluid">
@@ -13,6 +16,7 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         <div class="col-xl-8 col-lg-10">
             <form asp-action="EditLanguage" asp-route-id="@Model.LanguageId" method="post">
                 @Html.AntiForgeryToken()

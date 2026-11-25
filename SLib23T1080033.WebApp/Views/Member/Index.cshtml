@@ -1,51 +1,213 @@
-﻿@{
-    ViewBag.Title = "Quản lý độc giả";
+@model SLib23T1080033.Models.DTOs.MemberPageDTO
+@using SLib23T1080033.Models.Constant
+
+@{
+    ViewData["Title"] = "Quản lý độc giả";
+    ViewBag.Description = "Tìm kiếm, lọc và quản lý hồ sơ cùng thẻ độc giả.";
+    var statusNames = new Dictionary<string, string>
+    {
+        [DatabaseConstant.MEMBERS_MEMBERSTATUS_ACTIVE] = "Đang hoạt động",
+        [DatabaseConstant.MEMBERS_MEMBERSTATUS_SUSPENDED] = "Đang khóa",
+        [DatabaseConstant.MEMBERS_MEMBERSTATUS_EXPIRED] = "Hết hạn",
+        [DatabaseConstant.MEMBERS_MEMBERSTATUS_CLOSED] = "Đã đóng"
+    };
 }
 
-<div class="editorial-page">
-    <section class="editorial-hero">
-        <div>
-            <p class="editorial-kicker">02 / Cộng đồng đọc</p>
-            <h1 class="editorial-title">Những người làm thư viện sống động.</h1>
-            <p class="editorial-lede">Quản lý độc giả bằng sự rõ ràng, tôn trọng và một trải nghiệm đủ nhẹ nhàng cho công việc mỗi ngày.</p>
-            <div class="editorial-actions">
-                <a class="btn btn-primary" href="#member-list"><i class="bi bi-person-plus me-1"></i> Thêm độc giả</a>
-                <a class="btn btn-outline-secondary" href="#member-list">Danh sách độc giả</a>
+<div class="app-content">
+    <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
+        @if (TempData["SuccessMessage"] is string successMessage)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @successMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
             </div>
-        </div>
-        <div class="editorial-note">
-            <strong>Không có thư viện nếu thiếu người đọc.</strong>
-            Mỗi hồ sơ là một mối liên hệ cần được chăm sóc bằng dữ liệu chính xác.
-        </div>
-    </section>
+        }
+        @if (TempData["ErrorMessage"] is string errorMessage)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @errorMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        }
 
-    <section class="editorial-section" id="member-list">
-        <div class="row g-4">
-            <div class="col-lg-7">
-                <div class="editorial-panel">
-                    <div class="editorial-section-heading">
-                        <h2>Hồ sơ độc giả</h2>
-                        <span>Coming together</span>
-                    </div>
-                    <table class="editorial-quiet-table">
-                        <thead><tr><th>Độc giả</th><th>Loại</th><th>Trạng thái</th></tr></thead>
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <form asp-action="Index" method="get" class="row g-2 flex-grow-1 align-items-center">
+                        <div class="col-12 col-md-3">
+                            <select name="memberTypeId" asp-items="ViewBag.MemberTypes" class="form-select" aria-label="Lọc theo loại độc giả">
+                                <option value="">Tất cả loại độc giả</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <select name="status" class="form-select" aria-label="Lọc theo trạng thái">
+                                <option value="">Tất cả trạng thái</option>
+                                @foreach (var status in statusNames)
+                                {
+                                    if ((string?)ViewBag.Status == status.Key)
+                                    {
+                                        <option value="@status.Key" selected>@status.Value</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@status.Key">@status.Value</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <input type="search" name="name" value="@ViewBag.Name" class="form-control"
+                                   placeholder="Tìm theo họ tên" aria-label="Tìm theo họ tên" />
+                        </div>
+                        <div class="col-12 col-md-3 d-flex gap-2">
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <i class="bi bi-search me-1"></i>Lọc
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">Xóa lọc</a>
+                        </div>
+                    </form>
+
+                    <a asp-action="CreateMember" class="btn btn-dark">
+                        <i class="bi bi-plus-lg me-1"></i>Thêm độc giả
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Họ tên</th>
+                                <th>Loại</th>
+                                <th>Email / Điện thoại</th>
+                                <th>Hết hạn thẻ</th>
+                                <th>Trạng thái</th>
+                                <th class="text-end">Thao tác</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr><td><span class="editorial-avatar me-2">NA</span><strong>Nguyễn An</strong></td><td>Thành viên</td><td><span class="editorial-pill">Hoạt động</span></td></tr>
-                            <tr><td><span class="editorial-avatar me-2">LH</span><strong>Lê Hà</strong></td><td>Sinh viên</td><td><span class="editorial-pill">Hoạt động</span></td></tr>
-                            <tr><td><span class="editorial-avatar me-2">TM</span><strong>Trần Minh</strong></td><td>Giảng viên</td><td><span class="editorial-pill">Hoạt động</span></td></tr>
+                            @if (Model.Items.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="6" class="text-center text-secondary py-4">
+                                        Không tìm thấy độc giả phù hợp.
+                                    </td>
+                                </tr>
+                            }
+                            @foreach (var member in Model.Items)
+                            {
+                                <tr>
+                                    <td class="fw-medium">@member.FullName</td>
+                                    <td>@member.MemberTypeName</td>
+                                    <td>
+                                        <div>@(member.Email ?? "—")</div>
+                                        <small class="text-secondary">@(member.Phone ?? "—")</small>
+                                    </td>
+                                    <td class="text-nowrap">@(member.ExpiredAt?.ToString("dd/MM/yyyy") ?? "Chưa gia hạn")</td>
+                                    <td>
+                                        @switch (member.MemberStatus)
+                                        {
+                                            case DatabaseConstant.MEMBERS_MEMBERSTATUS_ACTIVE:
+                                                <span class="badge bg-success-subtle text-success-emphasis">Đang hoạt động</span>
+                                                break;
+                                            case DatabaseConstant.MEMBERS_MEMBERSTATUS_SUSPENDED:
+                                                <span class="badge bg-warning-subtle text-warning-emphasis">Đang khóa</span>
+                                                break;
+                                            case DatabaseConstant.MEMBERS_MEMBERSTATUS_EXPIRED:
+                                                <span class="badge bg-danger-subtle text-danger-emphasis">Hết hạn</span>
+                                                break;
+                                            case DatabaseConstant.MEMBERS_MEMBERSTATUS_CLOSED:
+                                                <span class="badge bg-secondary-subtle text-secondary-emphasis">Đã đóng</span>
+                                                break;
+                                            default:
+                                                <span class="badge bg-secondary-subtle text-secondary-emphasis">@member.MemberStatus</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="d-inline-flex flex-wrap justify-content-end gap-1">
+                                            <a asp-action="EditMember" asp-route-id="@member.MemberId"
+                                               class="btn btn-sm btn-outline-secondary" title="Sửa độc giả"
+                                               aria-label="Sửa độc giả @member.FullName">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            @if (member.MemberStatus == DatabaseConstant.MEMBERS_MEMBERSTATUS_ACTIVE ||
+                                                 member.MemberStatus == DatabaseConstant.MEMBERS_MEMBERSTATUS_SUSPENDED)
+                                            {
+                                                <form asp-action="SetSuspended" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@member.MemberId" />
+                                                    <input type="hidden" name="suspended"
+                                                           value="@(member.MemberStatus == DatabaseConstant.MEMBERS_MEMBERSTATUS_ACTIVE ? "true" : "false")" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-warning"
+                                                            title="@(member.MemberStatus == DatabaseConstant.MEMBERS_MEMBERSTATUS_ACTIVE ? "Khóa độc giả" : "Mở khóa độc giả")"
+                                                            aria-label="@(member.MemberStatus == DatabaseConstant.MEMBERS_MEMBERSTATUS_ACTIVE ? "Khóa" : "Mở khóa") @member.FullName">
+                                                        <i class="bi @(member.MemberStatus == DatabaseConstant.MEMBERS_MEMBERSTATUS_ACTIVE ? "bi-lock" : "bi-unlock")"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                            <form asp-action="RenewCard" method="post" class="d-inline-flex align-items-center gap-1">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@member.MemberId" />
+                                                <input type="date" name="expiredAt" class="form-control form-control-sm"
+                                                       min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"
+                                                       aria-label="Ngày hết hạn mới cho @member.FullName" required />
+                                                <button type="submit" class="btn btn-sm btn-outline-success"
+                                                        title="Gia hạn thẻ" aria-label="Gia hạn thẻ @member.FullName">
+                                                    <i class="bi bi-calendar-plus"></i>
+                                                </button>
+                                            </form>
+                                            <a asp-action="DeleteMember" asp-route-id="@member.MemberId"
+                                               class="btn btn-sm btn-outline-danger" title="Xóa độc giả"
+                                               aria-label="Xóa độc giả @member.FullName">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="col-lg-5">
-                <div class="editorial-panel h-100">
-                    <h3>Một trải nghiệm bắt đầu từ hồ sơ tốt.</h3>
-                    <p>Thông tin độc giả, loại thành viên và lịch sử sử dụng sẽ được tổ chức trong cùng một nhịp làm việc.</p>
-                    <div class="row mt-4">
-                        <div class="col-6"><div class="editorial-stat"><strong>01</strong><span>Hồ sơ</span></div></div>
-                        <div class="col-6"><div class="editorial-stat"><strong>02</strong><span>Loại độc giả</span></div></div>
-                    </div>
-                </div>
+
+            <div class="card-footer d-flex justify-content-center align-items-center">
+                @if (Model.TotalPages > 1)
+                {
+                    <nav aria-label="Phân trang độc giả">
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                                @if (Model.Page <= 1)
+                                {
+                                    <span class="page-link">Trước</span>
+                                }
+                                else
+                                {
+                                    <a class="page-link" asp-action="Index" asp-route-memberTypeId="@ViewBag.MemberTypeId"
+                                       asp-route-status="@ViewBag.Status" asp-route-name="@ViewBag.Name"
+                                       asp-route-page="@(Model.Page - 1)" asp-route-pageSize="@Model.PageSize">Trước</a>
+                                }
+                            </li>
+                            <li class="page-item active" aria-current="page">
+                                <span class="page-link">Trang @Model.Page / @Model.TotalPages</span>
+                            </li>
+                            <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
+                                @if (Model.Page >= Model.TotalPages)
+                                {
+                                    <span class="page-link">Sau</span>
+                                }
+                                else
+                                {
+                                    <a class="page-link" asp-action="Index" asp-route-memberTypeId="@ViewBag.MemberTypeId"
+                                       asp-route-status="@ViewBag.Status" asp-route-name="@ViewBag.Name"
+                                       asp-route-page="@(Model.Page + 1)" asp-route-pageSize="@Model.PageSize">Sau</a>
+                                }
+                            </li>
+                        </ul>
+                    </nav>
+                }
             </div>
         </div>
     </div>

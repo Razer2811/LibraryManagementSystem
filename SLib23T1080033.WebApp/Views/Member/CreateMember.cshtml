@@ -1,0 +1,126 @@
+@model SLib23T1080033.Models.DTOs.MemberDTO
+
+@{
+    ViewData["Title"] = "Thêm độc giả";
+    ViewBag.Description = "Nhập thông tin để tạo hồ sơ độc giả mới.";
+}
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Độc giả</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Thêm độc giả</li>
+        </ol>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10">
+                <form asp-action="CreateMember" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="bi bi-person-plus me-2"></i>Thông tin độc giả</h3>
+                        </div>
+                        <div class="card-body">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="MemberCode" class="form-label">Mã độc giả</label>
+                                    <input asp-for="MemberCode" class="form-control" maxlength="30"
+                                           placeholder="Nhập mã độc giả" autofocus required />
+                                    <span asp-validation-for="MemberCode" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="MemberTypeId" class="form-label">Loại độc giả</label>
+                                    <select asp-for="MemberTypeId" asp-items="ViewBag.MemberTypes" class="form-select" required>
+                                        <option value="">Chọn loại độc giả</option>
+                                    </select>
+                                    <span asp-validation-for="MemberTypeId" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="FullName" class="form-label">Họ tên</label>
+                                    <input asp-for="FullName" class="form-control" maxlength="200"
+                                           placeholder="Nhập họ tên độc giả" required />
+                                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="DateOfBirth" class="form-label">Ngày sinh</label>
+                                    <input asp-for="DateOfBirth" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" />
+                                    <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Gender" class="form-label">Giới tính</label>
+                                    <select asp-for="Gender" class="form-select">
+                                        <option value="">Không xác định</option>
+                                        <option value="Male">Nam</option>
+                                        <option value="Female">Nữ</option>
+                                        <option value="Other">Khác</option>
+                                    </select>
+                                    <span asp-validation-for="Gender" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Email" class="form-label">Email</label>
+                                    <input asp-for="Email" type="email" class="form-control" maxlength="254"
+                                           placeholder="name@example.com" />
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Phone" class="form-label">Số điện thoại</label>
+                                    <input asp-for="Phone" type="tel" class="form-control" maxlength="20"
+                                           placeholder="Nhập số điện thoại" />
+                                    <span asp-validation-for="Phone" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Organization" class="form-label">Cơ quan / Trường học</label>
+                                    <input asp-for="Organization" class="form-control" maxlength="200"
+                                           placeholder="Nhập cơ quan hoặc trường học" />
+                                    <span asp-validation-for="Organization" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Address" class="form-label">Địa chỉ</label>
+                                <input asp-for="Address" class="form-control" maxlength="300"
+                                       placeholder="Nhập địa chỉ" />
+                                <span asp-validation-for="Address" class="text-danger small"></span>
+                            </div>
+
+                            <div class="mb-0">
+                                <label asp-for="Notes" class="form-label">Ghi chú</label>
+                                <textarea asp-for="Notes" class="form-control" maxlength="500" rows="3"
+                                          placeholder="Thông tin bổ sung (nếu có)"></textarea>
+                                <span asp-validation-for="Notes" class="text-danger small"></span>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-dark">
+                                <i class="bi bi-check-lg me-1"></i>Thêm độc giả
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Quay lại
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

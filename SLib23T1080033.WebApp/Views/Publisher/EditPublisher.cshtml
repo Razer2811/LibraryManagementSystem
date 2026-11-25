@@ -1,8 +1,12 @@
 @model Publisher
-@{ ViewData["Title"] = "Chỉnh sửa nhà xuất bản"; }
+@{
+    ViewData["Title"] = "Chỉnh sửa nhà xuất bản";
+    ViewBag.Description = "Cập nhật thông tin của nhà xuất bản đã chọn.";
+}
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         <div class="row">
             <div class="col-xl-8 col-lg-10">
                 <form asp-action="EditPublisher" asp-route-id="@Model.PublisherId" method="post">

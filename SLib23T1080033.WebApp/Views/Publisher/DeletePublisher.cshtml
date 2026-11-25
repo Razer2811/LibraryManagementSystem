@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Xóa nhà xuất bản";
+    ViewBag.Description = "Kiểm tra thông tin trước khi xác nhận xóa nhà xuất bản.";
 }
 
 <div class="app-content-header">
@@ -20,6 +21,7 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         <div class="row">
             <div class="col-xl-8 col-lg-10">
                 <div class="card">

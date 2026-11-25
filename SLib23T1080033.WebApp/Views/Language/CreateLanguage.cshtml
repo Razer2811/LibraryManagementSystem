@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Thêm ngôn ngữ";
+    ViewBag.Description = "Nhập thông tin để thêm ngôn ngữ mới vào danh mục.";
 }
 
 <!-- Breadcrumb: một dòng, căn trái thẳng hàng với tiêu đề -->
@@ -17,6 +18,7 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         <div class="row justify-content-center">
             <div class="col-xl-8 col-lg-10">
 

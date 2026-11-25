@@ -1,0 +1,64 @@
+@model SLib23T1080033.Models.DTOs.MemberDTO
+
+@{
+    ViewData["Title"] = "Xóa độc giả";
+    ViewBag.Description = "Xem lại hồ sơ và điều kiện xóa trước khi xác nhận.";
+}
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Độc giả</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Xóa độc giả</li>
+        </ol>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="bi bi-person-x me-2"></i>Xác nhận xóa độc giả</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-4">
+                            Bạn có chắc chắn muốn xóa hồ sơ này không?
+                            <span class="text-danger">Thao tác này không thể hoàn tác.</span>
+                        </p>
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4 fw-normal text-secondary">Mã độc giả</dt>
+                            <dd class="col-sm-8 fw-medium">@Model.MemberCode</dd>
+                            <dt class="col-sm-4 fw-normal text-secondary">Họ tên</dt>
+                            <dd class="col-sm-8 fw-medium">@Model.FullName</dd>
+                            <dt class="col-sm-4 fw-normal text-secondary">Loại độc giả</dt>
+                            <dd class="col-sm-8">@Model.MemberTypeName</dd>
+                            <dt class="col-sm-4 fw-normal text-secondary">Email</dt>
+                            <dd class="col-sm-8">@(Model.Email ?? "—")</dd>
+                            <dt class="col-sm-4 fw-normal text-secondary">Trạng thái</dt>
+                            <dd class="col-sm-8">@Model.MemberStatus</dd>
+                        </dl>
+                        <div class="alert alert-warning mt-3 mb-0">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            Độc giả có lịch sử mượn sách không thể bị xóa.
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex flex-wrap gap-2">
+                        <form asp-action="DeleteMemberConfirmed" asp-route-id="@Model.MemberId" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Xác nhận xóa
+                            </button>
+                        </form>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Quay lại
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

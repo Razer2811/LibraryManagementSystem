@@ -1,5 +1,8 @@
 @model Language
-@{ ViewData["Title"] = "Xóa ngôn ngữ"; }
+@{
+    ViewData["Title"] = "Xóa ngôn ngữ";
+    ViewBag.Description = "Kiểm tra thông tin trước khi xác nhận xóa ngôn ngữ.";
+}
 
 <div class="app-content-header">
     <div class="container-fluid">
@@ -17,6 +20,7 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         <div class="row">
             <div class="col-xl-8 col-lg-10">
             <div class="card">

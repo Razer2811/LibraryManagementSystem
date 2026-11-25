@@ -1,5 +1,8 @@
 @model Location
-@{ ViewData["Title"] = "Cập nhật vị trí"; }
+@{
+    ViewData["Title"] = "Cập nhật vị trí";
+    ViewBag.Description = "Cập nhật thông tin vị trí lưu trữ đã chọn.";
+}
 
 <div class="app-content-header">
     <div class="container-fluid">
@@ -13,6 +16,7 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         <div class="col-xl-8 col-lg-10">
             <form asp-action="EditLocation" asp-route-id="@Model.LocationId" method="post">
                 @Html.AntiForgeryToken()

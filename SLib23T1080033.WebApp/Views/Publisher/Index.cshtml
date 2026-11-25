@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Quản lý nhà xuất bản";
+    ViewBag.Description = "Tra cứu và quản lý thông tin các nhà xuất bản.";
 }
 
 <!-- Tiêu đề + breadcrumb -->
@@ -21,6 +22,7 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         @if (TempData["SuccessMessage"] != null)
         {
             <div class="alert alert-success alert-dismissible fade show" role="alert">

@@ -1,5 +1,8 @@
 @model Location
-@{ ViewData["Title"] = "Xóa vị trí"; }
+@{
+    ViewData["Title"] = "Xóa vị trí";
+    ViewBag.Description = "Kiểm tra thông tin trước khi xác nhận xóa vị trí.";
+}
 
 <div class="app-content-header">
     <div class="container-fluid">
@@ -17,6 +20,7 @@
 
 <div class="app-content">
     <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
         <div class="row">
             <div class="col-xl-8 col-lg-10">
             <div class="card">

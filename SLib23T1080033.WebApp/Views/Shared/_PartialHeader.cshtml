@@ -1,4 +1,37 @@
-﻿<!--begin::Header-->
+<!--begin::Header-->
+@{
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home";
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? "Index";
+    var sectionNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Author"] = "Tác giả",
+        ["Book"] = "Sách",
+        ["Borrowing"] = "Mượn sách",
+        ["Category"] = "Danh mục",
+        ["Employee"] = "Nhân viên",
+        ["Language"] = "Ngôn ngữ",
+        ["Location"] = "Vị trí",
+        ["Member"] = "Độc giả",
+        ["MemberType"] = "Loại độc giả",
+        ["Publisher"] = "Nhà xuất bản",
+        ["Return"] = "Trả sách"
+    };
+    var sectionName = ViewData["HeaderBreadcrumb"] as string;
+    if (string.IsNullOrWhiteSpace(sectionName))
+    {
+        sectionNames.TryGetValue(controllerName, out sectionName);
+    }
+
+    var actionLabel = actionName.StartsWith("Create", StringComparison.OrdinalIgnoreCase)
+        ? "Thêm"
+        : actionName.StartsWith("Edit", StringComparison.OrdinalIgnoreCase)
+            ? "Sửa"
+            : actionName.StartsWith("Delete", StringComparison.OrdinalIgnoreCase)
+                ? "Xóa"
+                : actionName.Equals("Privacy", StringComparison.OrdinalIgnoreCase)
+                    ? "Chính sách"
+                    : ViewData["Title"]?.ToString() ?? actionName;
+}
 <nav class="app-header navbar navbar-expand bg-body-secondary">
     <div class="container-fluid">
         <!--begin::Start Navbar Links-->
@@ -8,7 +41,34 @@
                     <i class="bi bi-list"></i>
                 </a>
             </li>
-
+            @if (sectionName is not null)
+            {
+                <li class="nav-item d-flex align-items-center ms-2">
+                    <ol class="breadcrumb mb-0">
+                        @if (!controllerName.Equals("Home", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <li class="breadcrumb-item">
+                                <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                            </li>
+                            @if (actionName.Equals("Index", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <li class="breadcrumb-item active" aria-current="page">@sectionName</li>
+                            }
+                            else
+                            {
+                                <li class="breadcrumb-item">
+                                    <a asp-controller="@controllerName" asp-action="Index">@sectionName</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">@actionLabel</li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="breadcrumb-item active" aria-current="page">@actionLabel</li>
+                        }
+                    </ol>
+                </li>
+            }
         </ul>
         <!--end::Start Navbar Links-->
         <!--begin::End Navbar Links-->
