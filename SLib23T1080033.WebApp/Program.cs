@@ -1,81 +1,74 @@
-﻿using SLib23T1080033.BusinessLayer;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using SLib23T1080033.BusinessLayer;
 using SLib23T1080033.DataLayer.Interfaces;
 using SLib23T1080033.DataLayer.SQLServer;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+// Đăng ký MVC
+builder.Services.AddControllersWithViews(options =>
+{
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+});
 
-// Cấu hình xác thực và phân quyền
+// Cấu hình xác thực bằng Cookie
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Account/Login";
         options.AccessDeniedPath = "/Account/AccessDenied";
+        options.Cookie.Name = "SLib23T1080033.Auth";
+
         options.Cookie.HttpOnly = true;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
         options.SlidingExpiration = true;
     });
 
+// Đăng ký phân quyền
 builder.Services.AddAuthorization();
-
-
 
 // Đăng ký DbHelper
 builder.Services.AddScoped<DbHelper>();
 
-// Đăng ký AuthorRepository
+// Đăng ký AuthorRepository và AuthorService
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
-
-// Đăng ký AuthorService
 builder.Services.AddScoped<AuthorService>();
 
-// Đăng ký PublisherRepository
+// Đăng ký PublisherRepository và PublisherService
 builder.Services.AddScoped<IPublisherRepository, PublisherRepository>();
-
-// Đăng ký PublisherService
 builder.Services.AddScoped<PublisherService>();
 
-// Đăng ký LanguageRepository
+// Đăng ký LanguageRepository và LanguageService
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
-// Đăng ký LanguageService
 builder.Services.AddScoped<LanguageService>();
 
-// Đăng ký Repository xử lý dữ liệu danh mục
+// Đăng ký CategoryRepository và CategoryService
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-
-// Đăng ký Service xử lý nghiệp vụ danh mục
 builder.Services.AddScoped<CategoryService>();
 
-// Đăng ký Repository xử lý dữ liệu vị trí
+// Đăng ký LocationRepository và LocationService
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
-
-// Đăng ký Service xử lý nghiệp vụ vị trí
 builder.Services.AddScoped<LocationService>();
 
-// Đăng ký Repository xử lý dữ liệu loại thành viên
+// Đăng ký MemberTypeRepository và MemberTypeService
 builder.Services.AddScoped<IMemberTypeRepository, MemberTypeRepository>();
-// Đăng ký Service xử lý nghiệp vụ loại thành viên
 builder.Services.AddScoped<MemberTypeService>();
-// Đăng ký Repository xử lý dữ liệu độc giả
+
+// Đăng ký MemberRepository và MemberService
 builder.Services.AddScoped<IMemberRepository, MemberRepository>();
-// Đăng ký Service xử lý nghiệp vụ độc giả
 builder.Services.AddScoped<MemberService>();
-// Đăng ký Repository xử lý dữ liệu nhân viên
+
+// Đăng ký EmployeeRepository và EmployeeService
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-// Đăng ký Service xử lý nghiệp vụ nhân viên
 builder.Services.AddScoped<EmployeeService>();
+
 var app = builder.Build();
 
-
-// Configure the HTTP request pipeline.
+// Cấu hình HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -84,9 +77,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
-
-// Authentication phải đứng trước Authorization
+// Xác thực người dùng trước khi kiểm tra quyền
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -95,7 +86,3 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-builder.Services.AddControllersWithViews(options =>
-{
-    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-});
