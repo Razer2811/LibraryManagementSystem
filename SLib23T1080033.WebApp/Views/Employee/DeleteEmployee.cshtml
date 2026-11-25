@@ -1,0 +1,53 @@
+@model SLib23T1080033.Models.DTOs.EmployeeDTO
+
+@{
+    ViewData["Title"] = "Xóa nhân viên";
+    ViewBag.Description = "Xem lại hồ sơ và điều kiện xóa trước khi xác nhận.";
+    var fullName = $"{Model.LastName} {Model.FirstName}";
+}
+
+<div class="app-content">
+    <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="bi bi-person-x me-2"></i>Xác nhận xóa nhân viên</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-4">
+                            Bạn có chắc chắn muốn xóa hồ sơ này không?
+                            <span class="text-danger">Thao tác này không thể hoàn tác.</span>
+                        </p>
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4 fw-normal text-secondary">Họ tên</dt>
+                            <dd class="col-sm-8 fw-medium">@fullName</dd>
+                            <dt class="col-sm-4 fw-normal text-secondary">Email</dt>
+                            <dd class="col-sm-8">@Model.Email</dd>
+                            <dt class="col-sm-4 fw-normal text-secondary">Điện thoại</dt>
+                            <dd class="col-sm-8">@(Model.Phone ?? "—")</dd>
+                            <dt class="col-sm-4 fw-normal text-secondary">Trạng thái</dt>
+                            <dd class="col-sm-8">@(Model.IsWorking ? "Đang làm việc" : "Đã ngừng làm việc")</dd>
+                        </dl>
+                        <div class="alert alert-warning mt-3 mb-0">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            Nhân viên đã lập phiếu mượn sách không thể bị xóa.
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex flex-wrap gap-2">
+                        <form asp-action="DeleteEmployeeConfirmed" asp-route-id="@Model.EmployeeId" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Xác nhận xóa
+                            </button>
+                        </form>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Quay lại
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

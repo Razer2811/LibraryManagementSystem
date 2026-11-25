@@ -1,35 +1,188 @@
-﻿@{
-    ViewBag.Title = "Quản lý nhân viên";
-    ViewBag.Description = "Khu vực thông tin và hoạt động của nhân viên thư viện.";
+﻿@model SLib23T1080033.Models.DTOs.EmployeePageDTO
+
+@{
+    ViewData["Title"] = "Quản lý nhân viên";
+    ViewBag.Description = "Tìm kiếm, lọc và quản lý hồ sơ cùng trạng thái làm việc của nhân viên.";
 }
 
-<p class="text-secondary mb-3">@ViewBag.Description</p>
-<div class="editorial-page">
-    <section class="editorial-hero">
-        <div>
-            <p class="editorial-kicker">03 / Người giữ nhịp</p>
-            <h1 class="editorial-title">Đằng sau mỗi trang sách là một đội ngũ.</h1>
-            <p class="editorial-lede">Một bảng điều khiển tinh gọn để phân công, phối hợp và giữ cho thư viện vận hành trôi chảy.</p>
-            <div class="editorial-actions">
-                <a class="btn btn-primary" href="#employee-list"><i class="bi bi-person-plus me-1"></i> Thêm nhân viên</a>
-                <a class="btn btn-outline-secondary" href="#employee-list">Xem đội ngũ</a>
+<div class="app-content">
+    <div class="container-fluid">
+        <p class="text-secondary mb-3">@ViewBag.Description</p>
+        @if (TempData["SuccessMessage"] is string successMessage)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @successMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
             </div>
-        </div>
-        <div class="editorial-note">
-            <strong>Công việc tốt cần một nhịp điệu tốt.</strong>
-            Tổ chức vai trò và quyền hạn để mỗi người tập trung vào điều mình làm tốt nhất.
-        </div>
-    </section>
+        }
+        @if (TempData["ErrorMessage"] is string errorMessage)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @errorMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        }
 
-    <section class="editorial-section" id="employee-list">
-        <div class="editorial-section-heading">
-            <h2>Đội ngũ thư viện</h2>
-            <span>People & roles</span>
-        </div>
-        <div class="row g-3">
-            <div class="col-md-4"><div class="editorial-panel h-100"><span class="editorial-avatar mb-3">QL</span><h3>Quản lý thư viện</h3><p>Điều phối hoạt động và định hướng không gian đọc.</p><div class="editorial-stat mt-3"><strong>01</strong><span>Vị trí</span></div></div></div>
-            <div class="col-md-4"><div class="editorial-panel h-100"><span class="editorial-avatar mb-3">TV</span><h3>Thủ thư</h3><p>Chăm sóc kho sách và hỗ trợ trải nghiệm độc giả.</p><div class="editorial-stat mt-3"><strong>02</strong><span>Vị trí</span></div></div></div>
-            <div class="col-md-4"><div class="editorial-panel h-100"><span class="editorial-avatar mb-3">NV</span><h3>Nhân viên hỗ trợ</h3><p>Đảm bảo các công việc vận hành được liền mạch.</p><div class="editorial-stat mt-3"><strong>03</strong><span>Vị trí</span></div></div></div>
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <form asp-action="Index" method="get" class="row g-2 flex-grow-1 align-items-center">
+                        <div class="col-12 col-md-4">
+                            <input type="search" name="name" value="@ViewBag.Name" class="form-control"
+                                   placeholder="Tìm theo họ tên hoặc email" aria-label="Tìm theo họ tên hoặc email" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <select name="isWorking" class="form-select" aria-label="Lọc theo trạng thái làm việc">
+                                @if (ViewBag.IsWorking is null)
+                                {
+                                    <option value="" selected>Tất cả trạng thái</option>
+                                }
+                                else
+                                {
+                                    <option value="">Tất cả trạng thái</option>
+                                }
+                                @if (ViewBag.IsWorking is bool working && working)
+                                {
+                                    <option value="true" selected>Đang làm việc</option>
+                                }
+                                else
+                                {
+                                    <option value="true">Đang làm việc</option>
+                                }
+                                @if (ViewBag.IsWorking is bool notWorking && !notWorking)
+                                {
+                                    <option value="false" selected>Đã ngừng làm việc</option>
+                                }
+                                else
+                                {
+                                    <option value="false">Đã ngừng làm việc</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4 d-flex gap-2">
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <i class="bi bi-search me-1"></i>Lọc
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">Xóa lọc</a>
+                        </div>
+                    </form>
+
+                    <a asp-action="CreateEmployee" class="btn btn-dark">
+                        <i class="bi bi-plus-lg me-1"></i>Thêm nhân viên
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Họ tên</th>
+                                <th>Email / Điện thoại</th>
+                                <th>Ngày sinh</th>
+                                <th>Địa chỉ</th>
+                                <th>Trạng thái</th>
+                                <th class="text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Items.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="6" class="text-center text-secondary py-4">
+                                        Không tìm thấy nhân viên phù hợp.
+                                    </td>
+                                </tr>
+                            }
+                            @foreach (var employee in Model.Items)
+                            {
+                                var fullName = $"{employee.LastName} {employee.FirstName}";
+                                <tr>
+                                    <td class="fw-medium">@fullName</td>
+                                    <td>
+                                        <div>@employee.Email</div>
+                                        <small class="text-secondary">@(employee.Phone ?? "—")</small>
+                                    </td>
+                                    <td class="text-nowrap">@(employee.DateOfBirth?.ToString("dd/MM/yyyy") ?? "—")</td>
+                                    <td>@(employee.Address ?? "—")</td>
+                                    <td>
+                                        @if (employee.IsWorking)
+                                        {
+                                            <span class="badge bg-success-subtle text-success-emphasis">Đang làm việc</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary-subtle text-secondary-emphasis">Đã ngừng làm việc</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="d-inline-flex flex-wrap justify-content-end gap-1">
+                                            <a asp-action="EditEmployee" asp-route-id="@employee.EmployeeId"
+                                               class="btn btn-sm btn-outline-secondary" title="Sửa nhân viên"
+                                               aria-label="Sửa nhân viên @fullName">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <form asp-action="SetWorking" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@employee.EmployeeId" />
+                                                <input type="hidden" name="working" value="@(!employee.IsWorking)" />
+                                                <button type="submit" class="btn btn-sm btn-outline-warning"
+                                                        title="@(employee.IsWorking ? "Ngừng làm việc" : "Khôi phục làm việc")"
+                                                        aria-label="@(employee.IsWorking ? "Ngừng làm việc" : "Khôi phục làm việc") của @fullName">
+                                                    <i class="bi @(employee.IsWorking ? "bi-person-dash" : "bi-person-check")"></i>
+                                                </button>
+                                            </form>
+                                            <a asp-action="DeleteEmployee" asp-route-id="@employee.EmployeeId"
+                                               class="btn btn-sm btn-outline-danger" title="Xóa nhân viên"
+                                               aria-label="Xóa nhân viên @fullName">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card-footer d-flex justify-content-center align-items-center">
+                @if (Model.TotalPages > 1)
+                {
+                    <nav aria-label="Phân trang nhân viên">
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                                @if (Model.Page <= 1)
+                                {
+                                    <span class="page-link">Trước</span>
+                                }
+                                else
+                                {
+                                    <a class="page-link" asp-action="Index" asp-route-name="@ViewBag.Name"
+                                       asp-route-isWorking="@ViewBag.IsWorking"
+                                       asp-route-page="@(Model.Page - 1)" asp-route-pageSize="@Model.PageSize">Trước</a>
+                                }
+                            </li>
+                            <li class="page-item active" aria-current="page">
+                                <span class="page-link">Trang @Model.Page / @Model.TotalPages</span>
+                            </li>
+                            <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
+                                @if (Model.Page >= Model.TotalPages)
+                                {
+                                    <span class="page-link">Sau</span>
+                                }
+                                else
+                                {
+                                    <a class="page-link" asp-action="Index" asp-route-name="@ViewBag.Name"
+                                       asp-route-isWorking="@ViewBag.IsWorking"
+                                       asp-route-page="@(Model.Page + 1)" asp-route-pageSize="@Model.PageSize">Sau</a>
+                                }
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
         </div>
     </div>
 </div>

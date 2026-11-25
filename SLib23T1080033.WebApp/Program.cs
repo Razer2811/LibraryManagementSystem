@@ -47,6 +47,10 @@ builder.Services.AddScoped<MemberTypeService>();
 builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 // Đăng ký Service xử lý nghiệp vụ độc giả
 builder.Services.AddScoped<MemberService>();
+// Đăng ký Repository xử lý dữ liệu nhân viên
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+// Đăng ký Service xử lý nghiệp vụ nhân viên
+builder.Services.AddScoped<EmployeeService>();
 var app = builder.Build();
 
 
