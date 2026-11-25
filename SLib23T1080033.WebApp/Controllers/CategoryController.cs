@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SLib23T1080033.BusinessLayer;
 using SLib23T1080033.Models.Entities;
@@ -6,6 +7,7 @@ namespace SLib23T1080033.WebApp.Controllers;
 
 public class CategoryController(CategoryService categoryService) : Controller
 {
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> Index(string? keyword)
     {

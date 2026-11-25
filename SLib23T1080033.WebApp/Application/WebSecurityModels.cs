@@ -86,7 +86,6 @@ public static class WebUserExtensions
             userData.UserName = principal.FindFirstValue(nameof(userData.UserName));
             userData.DisplayName = principal.FindFirstValue(nameof(userData.DisplayName));
             userData.Email = principal.FindFirstValue(nameof(userData.Email));
-
             userData.Roles = new List<string>();
             foreach (var claim in principal.FindAll(ClaimTypes.Role))
             {

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SLib23T1080033.BusinessLayer;
@@ -8,6 +9,7 @@ namespace SLib23T1080033.WebApp.Controllers;
 
 public class MemberController(MemberService memberService, MemberTypeService memberTypeService) : Controller
 {
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> Index(
         int? memberTypeId,

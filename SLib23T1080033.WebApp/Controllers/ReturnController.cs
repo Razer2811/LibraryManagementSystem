@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SLib23T1080033.WebApp.Controllers
 {
     public class ReturnController : Controller
     {
+        [Authorize]
         public IActionResult Index()
         {
             return View();

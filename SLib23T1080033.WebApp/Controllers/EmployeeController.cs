@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SLib23T1080033.BusinessLayer;
 using SLib23T1080033.Models.DTOs;
@@ -6,6 +7,7 @@ namespace SLib23T1080033.WebApp.Controllers;
 
 public class EmployeeController(EmployeeService employeeService) : Controller
 {
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> Index(
         string? name,

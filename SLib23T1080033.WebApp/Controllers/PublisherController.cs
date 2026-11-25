@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SLib23T1080033.BusinessLayer;
 using SLib23T1080033.Models.Entities;
 
+
 namespace SLib23T1080033.WebApp.Controllers
 {
+    [Authorize]
     public class PublisherController(PublisherService publisherService) : Controller
     {
         [HttpGet]

@@ -74,24 +74,28 @@
         <!--begin::End Navbar Links-->
         <ul class="navbar-nav ms-auto">
             <!--begin::User Menu Dropdown-->
+            @{
+                var userData = User.GetUserData();
+            }
+
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                     <img src="~/lib/adminlte/assets/img/user2-160x160.jpg" class="user-image rounded-circle shadow" alt="User Image" />
-                    <span class="d-none d-md-inline">Trần Lê Minh Khánh</span>
+                    <span class="d-none d-md-inline">@userData?.DisplayName</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <!--begin::User Image-->
                     <li class="user-header text-bg-primary">
                         <img src="~/lib/adminlte/assets/img/user2-160x160.jpg" class="rounded-circle shadow" alt="User Image" />
                         <p>
-                            Trần Lê Minh Khánh
+                            @userData?.DisplayName
                         </p>
                     </li>
                     <!--end::User Image-->
                     <!--begin::Menu Footer-->
                     <li class="user-footer">
                         <a href="#" class="btn btn-default btn-flat">Đổi mật khẩu</a>
-                        <a href="#" class="btn btn-default btn-flat float-end">Thoát</a>
+                        <a href="/Account/Logout" class="btn btn-default btn-flat float-end">Thoát</a>
                     </li>
                     <!--end::Menu Footer-->
                 </ul>
