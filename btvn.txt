@@ -1,18 +1,3 @@
-làm bắt lỗi trong service về kiểm tra dữ liệu đầu vào dùng asp 
-thực sự làm trong service
-
-Về nhà hiểu được từng hàm thêm và sửa cho các Controller (đặt biệt là kiểm tra dữ liệu)
-Chức năng quản lý độc giả : (chưa có repo, service)
-- Sử dụng DTO có tên là MemberDTO để biểu diễn thông tin cho độc giả bao gồm đầy đủ các thông tin của độc giả và 
-thông tin MemberTypeName. Lớp MemberDto kế thừa Entities Member.
-- Repository cho Member không kế thừa ICommonRepository
-- Các chức năng cần có:
-	+ Hiển thị, tìm kiếm/lọc độc giả theo : loại, trạng thái, tên
-	+ Phân trang hiển thị
-	+ Bổ sung, cập nhật(không được thay đổi trạng thái, không được thay đổi thời gian hết hạn thẻ), khóa/mở khóa cho 
-	độc giả (cập nhật trạng thái). Xóa, gia hạn thẻ
-
-Chức năng quản lý nhân viên
-
-Về nhà cần làm và chỉnh sửa lại về mặt code backend cũng như là làm việc bắt lỗi dữ liệu trong service hoặc làm trong 
-file controller (có 2 cách, cách nào cũng được)
+tạo trong db thêm bảng Role và kết nối với tất cả các bảng còn lại sao cho hợp lý, 
+tiếp theo là viết lại hàm đăng nhập sao cho đúng chứ không phải nhập cái gì cũng được
+hoàn thiện phần đăng nhập

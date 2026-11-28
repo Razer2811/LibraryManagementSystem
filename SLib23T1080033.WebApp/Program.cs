@@ -17,7 +17,7 @@ builder.Services
     .AddCookie(options =>
     {
         options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.AccessDeniedPath = "/Account/   ";
         options.Cookie.Name = "SLib23T1080033.Auth";
 
         options.Cookie.HttpOnly = true;

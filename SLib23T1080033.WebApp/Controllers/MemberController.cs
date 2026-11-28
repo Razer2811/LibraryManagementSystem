@@ -6,10 +6,9 @@ using SLib23T1080033.Models.DTOs;
 using SLib23T1080033.Models.Entities;
 
 namespace SLib23T1080033.WebApp.Controllers;
-
+[Authorize(Roles = $"{WebUserRoles.Administrator}")]
 public class MemberController(MemberService memberService, MemberTypeService memberTypeService) : Controller
 {
-    [Authorize]
     [HttpGet]
     public async Task<IActionResult> Index(
         int? memberTypeId,
